@@ -1,4 +1,4 @@
-package com.example.julia.bookshelf;
+package com.julia.bookshelf.model.data;
 
 import android.os.Parcel;
 import android.os.Parcelable;

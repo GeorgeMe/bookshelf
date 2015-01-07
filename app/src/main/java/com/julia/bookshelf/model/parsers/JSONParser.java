@@ -1,4 +1,6 @@
-package com.example.julia.bookshelf;
+package com.julia.bookshelf.model.parsers;
+
+import com.julia.bookshelf.model.data.Book;
 
 import org.json.JSONArray;
 import org.json.JSONException;

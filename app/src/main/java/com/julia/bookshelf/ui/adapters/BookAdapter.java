@@ -1,4 +1,4 @@
-package com.example.julia.bookshelf;
+package com.julia.bookshelf.ui.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.CardView;
@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.julia.bookshelf.R;
+import com.julia.bookshelf.model.data.Book;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
