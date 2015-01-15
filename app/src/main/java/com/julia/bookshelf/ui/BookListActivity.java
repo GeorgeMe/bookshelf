@@ -23,11 +23,13 @@ public class BookListActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.book_list);
+
         initView();
         LoadBooksTask loadBooksTask = new LoadBooksTask(getApplicationContext()) {
             @Override
             protected void onPostExecute(List<Book> books) {
                 updateView(books);
+
             }
         };
         loadBooksTask.execute();

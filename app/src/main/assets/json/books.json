@@ -15,46 +15,6 @@
       "genre": "fiction",
       "annotation": "The Capitol Building, Washington DC: Harvard symbologist Robert Langdon believes he is here to give a lecture. He is wrong. Within minutes of his arrival, a shocking object is discovered. It is a gruesome invitation into an ancient world of hidden wisdom.",
       "isFavourite": false
-    },
-    {
-          "title": "The Lost Symbol",
-          "author": "Dan Brown",
-          "cover": "https://pp.vk.me/c540102/v540102340/ecb3/TSlDUYFp1Ss.jpg",
-          "genre": "fiction",
-          "annotation": "The Capitol Building, Washington DC: Harvard symbologist Robert Langdon believes he is here to give a lecture. He is wrong. Within minutes of his arrival, a shocking object is discovered. It is a gruesome invitation into an ancient world of hidden wisdom.",
-          "isFavourite": false
-        },
-        {
-              "title": "The Lost Symbol",
-              "author": "Dan Brown",
-              "cover": "https://pp.vk.me/c540102/v540102340/ecb3/TSlDUYFp1Ss.jpg",
-              "genre": "fiction",
-              "annotation": "The Capitol Building, Washington DC: Harvard symbologist Robert Langdon believes he is here to give a lecture. He is wrong. Within minutes of his arrival, a shocking object is discovered. It is a gruesome invitation into an ancient world of hidden wisdom.",
-              "isFavourite": false
-            },
-            {
-                  "title": "The Lost Symbol",
-                  "author": "Dan Brown",
-                  "cover": "https://pp.vk.me/c540102/v540102340/ecb3/TSlDUYFp1Ss.jpg",
-                  "genre": "fiction",
-                  "annotation": "The Capitol Building, Washington DC: Harvard symbologist Robert Langdon believes he is here to give a lecture. He is wrong. Within minutes of his arrival, a shocking object is discovered. It is a gruesome invitation into an ancient world of hidden wisdom.",
-                  "isFavourite": false
-                },
-                {
-                      "title": "The Lost Symbol",
-                      "author": "Dan Brown",
-                      "cover": "https://pp.vk.me/c540102/v540102340/ecb3/TSlDUYFp1Ss.jpg",
-                      "genre": "fiction",
-                      "annotation": "The Capitol Building, Washington DC: Harvard symbologist Robert Langdon believes he is here to give a lecture. He is wrong. Within minutes of his arrival, a shocking object is discovered. It is a gruesome invitation into an ancient world of hidden wisdom.",
-                      "isFavourite": false
-                    },
-                    {
-                          "title": "The Lost Symbol",
-                          "author": "Dan Brown",
-                          "cover": "https://pp.vk.me/c540102/v540102340/ecb3/TSlDUYFp1Ss.jpg",
-                          "genre": "fiction",
-                          "annotation": "The Capitol Building, Washington DC: Harvard symbologist Robert Langdon believes he is here to give a lecture. He is wrong. Within minutes of his arrival, a shocking object is discovered. It is a gruesome invitation into an ancient world of hidden wisdom.",
-                          "isFavourite": false
-                        }
+    }
   ]
 }

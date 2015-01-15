@@ -7,4 +7,6 @@
     <string name="Annotation">Annotation:</string>
     <string name="Rating_by" formatted="false">Rating %d by %d people</string>
     <string name="Genre" formatted="false"><![CDATA[<b>Genre:</b> %s]]></string>
+    <string name="incorrect_email">Incorrect Email</string>
+    <string name="too_short_password">Password is less than 5 characters</string>
 </resources>

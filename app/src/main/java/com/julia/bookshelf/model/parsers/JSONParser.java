@@ -1,5 +1,7 @@
 package com.julia.bookshelf.model.parsers;
 
+import android.util.Log;
+
 import com.julia.bookshelf.model.data.Book;
 
 import org.json.JSONArray;
@@ -13,26 +15,26 @@ import java.util.ArrayList;
  */
 public class JSONParser {
     public static ArrayList<Book> parseBooks(String json) {
-        ArrayList<Book> books = new ArrayList<>();
+        ArrayList<Book> bookList = new ArrayList<>();
         try {
             JSONObject reader = new JSONObject(json);
-            books = new ArrayList<>();
-            JSONArray jsonArray = reader.getJSONArray("books");
+            JSONArray jsonArray = reader.getJSONArray("results");
+            Book book;
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                Book book = new Book();
+                book = new Book();
                 book.setTitle(jsonObject.getString("title"));
                 book.setAuthor(jsonObject.getString("author"));
                 book.setCover(jsonObject.getString("cover"));
                 book.setGenre(jsonObject.getString("genre"));
                 book.setAnnotation(jsonObject.getString("annotation"));
                 book.setFavourite(jsonObject.getBoolean("isFavourite"));
-                books.add(book);
+                bookList.add(book);
             }
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.w("BOOKSHELF", e.toString());
         }
-        return books;
+        return bookList;
     }
 
 }
