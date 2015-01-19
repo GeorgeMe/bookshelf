@@ -1,45 +1,78 @@
 package com.julia.bookshelf.ui;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.julia.bookshelf.R;
+import com.julia.bookshelf.model.data.User;
+import com.julia.bookshelf.model.http.InternetAccess;
+import com.julia.bookshelf.model.tasks.LoginUserTask;
 
 /**
  * Created by Julia on 12.01.2015.
  */
 public class LoginActivity extends Activity implements View.OnClickListener {
 
-    public static final int MIN_PASSWORD_LENGTH = 5;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
         Button btnLogin = (Button) findViewById(R.id.btn_log_in);
+        TextView txtRegister = (TextView) findViewById(R.id.txt_sign_up);
         btnLogin.setOnClickListener(this);
+        txtRegister.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        EditText txtEmail = (EditText) findViewById(R.id.txt_email);
-        EditText txtPassword = (EditText) findViewById(R.id.txt_password);
-        boolean isCorrectEmail = Patterns.EMAIL_ADDRESS.matcher(txtEmail.getText()).matches();
-        boolean isCorrectPassword = txtPassword.getText().length() > MIN_PASSWORD_LENGTH;
-        if (isCorrectEmail & isCorrectPassword) {
-            Log.i("bookshelf", "to send");
-        } else {
-            if (!isCorrectEmail) {
-                txtEmail.setError(getString(R.string.incorrect_email));
+        switch (v.getId()) {
+            case R.id.txt_sign_up: {
+                Intent intent = new Intent(this, RegisterActivity.class);
+                startActivity(intent);
             }
-            if (!isCorrectPassword) {
-                txtPassword.setError(getString(R.string.too_short_password));
+            case R.id.btn_log_in: {
+                EditText txtUsername = (EditText) findViewById(R.id.txt_username);
+                EditText txtPassword = (EditText) findViewById(R.id.txt_password);
+
+                String username = txtUsername.getText().toString();
+                String password = txtPassword.getText().toString();
+
+                boolean isEmptyUsername = username.isEmpty();
+                boolean isEnoughPasswordLength = password.length() > getResources().getInteger(R.integer.min_password_length);
+
+                if (isEnoughPasswordLength & !isEmptyUsername) {
+                    if (InternetAccess.isInternetConnection(getApplicationContext())) {
+                        LoginUserTask loginUserTask = new LoginUserTask(username, password) {
+                            @Override
+                            protected void onPostExecute(User user) {
+                                if (user == null) {
+                                    Toast.makeText(getApplicationContext(), getString(R.string.incorrect_username_or_password), Toast.LENGTH_SHORT).show();
+                                } else{//todo: call BookListActivity}
+                                    Log.i("BOOKSHELF","User is not null");
+                                }
+                            }};
+                        loginUserTask.execute();
+                    } else {
+                        InternetAccess.showNoInternetConnection(getApplicationContext());
+                    }
+                } else {
+                    if (!isEnoughPasswordLength) {
+                        txtPassword.setError(getString(R.string.too_short_password));
+                    }
+                    if (isEmptyUsername) {
+                        txtUsername.setError(getString(R.string.empty_username));
+                    }
+                }
             }
         }
+
+
     }
 }

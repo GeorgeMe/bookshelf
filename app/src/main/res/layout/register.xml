@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -31,7 +30,6 @@
             android:inputType="text"
             android:textColorHint="#bf303f9e"/>
     </LinearLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
@@ -53,19 +51,59 @@
             android:hint="Password.."
             android:textColorHint="#bf303f9e"
             android:inputType="textPassword"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="6dp">
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_action_secure"
+            android:background="#ff303f9e" />
+
+        <EditText
+            android:id="@+id/txt_confirm_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="18dp"
+            android:textSize="@dimen/txt_size_title"
+            android:hint="Confirm password.."
+            android:textColorHint="#bf303f9e"
+            android:inputType="textPassword"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="6dp">
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_action_email"
+            android:background="#ff303f9e" />
+
+        <EditText
+            android:id="@+id/txt_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="18dp"
+            android:textSize="@dimen/txt_size_title"
+            android:hint="Email.."
+            android:textColorHint="#bf303f9e"
+            android:inputType="textEmailAddress"/>
+
     </LinearLayout>
     <Button
-        android:id="@+id/btn_log_in"
+        android:id="@+id/btn_register"
         android:layout_marginTop="6dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Log in"/>
-    <TextView
-        android:id="@+id/txt_sign_up"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        android:gravity="center"
-        android:text="Don't have an account? Register"/>
-</LinearLayout><!--</RelativeLayout>-->
+        android:text="Register"/>
+
+</LinearLayout>

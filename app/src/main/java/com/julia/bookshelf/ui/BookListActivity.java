@@ -25,7 +25,7 @@ public class BookListActivity extends Activity {
         setContentView(R.layout.book_list);
 
         initView();
-        LoadBooksTask loadBooksTask = new LoadBooksTask(getApplicationContext()) {
+        LoadBooksTask loadBooksTask = new LoadBooksTask() {
             @Override
             protected void onPostExecute(List<Book> books) {
                 updateView(books);

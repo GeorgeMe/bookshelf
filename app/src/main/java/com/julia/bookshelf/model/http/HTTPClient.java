@@ -2,6 +2,7 @@ package com.julia.bookshelf.model.http;
 
 import android.util.Log;
 
+import org.apache.http.HttpStatus;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -16,26 +17,32 @@ import java.net.URLConnection;
  * Created by Julia on 09.01.2015.
  */
 public class HTTPClient {
-    public static String get(String path) {
+
+    public static HTTPResponse get(String path) {
         BufferedReader in = null;
         StringBuilder stringBuilder = null;
+        int responseCode = 0;
         try {
             URL url = new URL(path);
-            URLConnection connection = url.openConnection();
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             addHeaders(connection);
-            in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            String inputLine;
-            stringBuilder = new StringBuilder();
-            while ((inputLine = in.readLine()) != null) {
-                stringBuilder.append(inputLine);
+            connection.connect();
+            responseCode = connection.getResponseCode();
+            if(responseCode == HttpStatus.SC_OK) {
+                in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String inputLine;
+                stringBuilder = new StringBuilder();
+                while ((inputLine = in.readLine()) != null) {
+                    stringBuilder.append(inputLine);
+                }
             }
         } catch (IOException e) {
-            Log.w("BOOKSHELF",e.toString());
-        }
-        finally {
+            Log.w("BOOKSHELF", e.toString());
+        } finally {
             closeStream(in);
         }
-        return stringBuilder.toString();
+        String json = stringBuilder != null ? stringBuilder.toString() : null;
+        return new HTTPResponse(responseCode,json);
     }
 
     private static void addHeaders(URLConnection connection) {
@@ -44,28 +51,16 @@ public class HTTPClient {
     }
 
     private static void closeStream(BufferedReader in) {
-        if (in!=null){
+        if (in != null) {
             try {
                 in.close();
             } catch (IOException e) {
-                Log.w("BOOKSHELF",e.toString());
+                Log.w("BOOKSHELF", e.toString());
             }
         }
     }
 
     public static void post(String path, JSONObject jsonObject) {
-//        JSONObject jsonObject = new JSONObject();
-//        try {
-//            jsonObject.put("title", "Серця трьох");
-//            jsonObject.put("author", "Jack London");
-//            jsonObject.put("cover", "http://a.wattpad.com/cover/10282042-256-k765626.jpg");
-//            jsonObject.put("genre", "fiction");
-//            jsonObject.put("annotation", "Francis Morgan, a wealthy heir of industrialist and Wall Street maven Richard Henry Morgan, is a jaded young New Yorker.");
-//            jsonObject.put("isFavourite", true);
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//        String urlParameters = jsonObject.toString();
         try {
             URL url = new URL(path);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -77,10 +72,10 @@ public class HTTPClient {
 //            connection.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
             DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
             wr.writeBytes(jsonObject.toString());
-            int i = connection.getResponseCode();
-            System.out.println("Response:" + i);
+            int responseCode = connection.getResponseCode();
+            Log.i("BOOKSHELF", "Response:" + responseCode);
         } catch (IOException e) {
-            Log.w("BOOKSHELF",e.toString());
+            Log.w("BOOKSHELF", e.toString());
         }
     }
 

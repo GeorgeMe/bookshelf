@@ -9,4 +9,8 @@
     <string name="Genre" formatted="false"><![CDATA[<b>Genre:</b> %s]]></string>
     <string name="incorrect_email">Incorrect Email</string>
     <string name="too_short_password">Password is less than 5 characters</string>
+    <string name="not_confirmed_password">Not confirmed password</string>
+    <string name="empty_username">Empty username</string>
+    <string name="no_internet_connection">No internet connection</string>
+    <string name="incorrect_username_or_password">Incorrect login or password</string>
 </resources>

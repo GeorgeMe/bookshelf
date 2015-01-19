@@ -3,6 +3,7 @@ package com.julia.bookshelf.model.parsers;
 import android.util.Log;
 
 import com.julia.bookshelf.model.data.Book;
+import com.julia.bookshelf.model.data.User;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,6 +36,19 @@ public class JSONParser {
             Log.w("BOOKSHELF", e.toString());
         }
         return bookList;
+    }
+
+    public static User parseUser(String json) {
+        User user = new User();
+        try {
+            JSONObject jsonObject = new JSONObject(json);
+            user.setUsername(jsonObject.getString("username"));
+            user.setEmail(jsonObject.getString("email"));
+            user.setSessionToken(jsonObject.getString("sessionToken"));
+        } catch (JSONException e) {
+            Log.w("BOOKSHELF", e.toString());
+        }
+        return user;
     }
 
 }

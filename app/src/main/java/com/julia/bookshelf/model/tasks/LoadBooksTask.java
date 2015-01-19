@@ -1,26 +1,22 @@
 package com.julia.bookshelf.model.tasks;
 
-import android.content.Context;
 import android.os.AsyncTask;
 
 import com.julia.bookshelf.model.data.Book;
 import com.julia.bookshelf.model.http.HTTPClient;
+import com.julia.bookshelf.model.http.HTTPResponse;
+import com.julia.bookshelf.model.http.URLCreator;
 import com.julia.bookshelf.model.parsers.JSONParser;
 
 import java.util.List;
 
 public class LoadBooksTask extends AsyncTask<Void, Void, List<Book>> {
-    private Context context;
-
-    public LoadBooksTask(Context context) {
-        this.context = context;
-    }
 
     @Override
     protected List<Book> doInBackground(Void... params) {
         //String json = loadJSONFromAsset("json/books.json");
-        String json = HTTPClient.get("https://api.parse.com/1/classes/Book");
-        return JSONParser.parseBooks(json);
+        HTTPResponse response = HTTPClient.get(URLCreator.loadBook());
+        return JSONParser.parseBooks(response.getJson());
     }
 
 //    public String loadJSONFromAsset(String path) {
