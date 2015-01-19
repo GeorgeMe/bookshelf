@@ -38,12 +38,22 @@ public class JSONParser {
         return bookList;
     }
 
-    public static User parseUser(String json) {
+    public static User parseLogedUser(String json) {
         User user = new User();
         try {
             JSONObject jsonObject = new JSONObject(json);
             user.setUsername(jsonObject.getString("username"));
             user.setEmail(jsonObject.getString("email"));
+            user.setSessionToken(jsonObject.getString("sessionToken"));
+        } catch (JSONException e) {
+            Log.w("BOOKSHELF", e.toString());
+        }
+        return user;
+    }
+    public static User parseRegisteredUser(String json){
+        User user = new User();
+        try {
+            JSONObject jsonObject = new JSONObject(json);
             user.setSessionToken(jsonObject.getString("sessionToken"));
         } catch (JSONException e) {
             Log.w("BOOKSHELF", e.toString());

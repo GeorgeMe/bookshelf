@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.example.julia.bookshelf.R;
 import com.julia.bookshelf.model.data.Book;
+import com.julia.bookshelf.model.http.InternetAccess;
 import com.julia.bookshelf.model.tasks.LoadBooksTask;
 import com.julia.bookshelf.ui.adapters.BookAdapter;
 
@@ -25,14 +26,18 @@ public class BookListActivity extends Activity {
         setContentView(R.layout.book_list);
 
         initView();
-        LoadBooksTask loadBooksTask = new LoadBooksTask() {
-            @Override
-            protected void onPostExecute(List<Book> books) {
-                updateView(books);
+        if (InternetAccess.isInternetConnection(getApplicationContext())) {
+            LoadBooksTask loadBooksTask = new LoadBooksTask() {
+                @Override
+                protected void onPostExecute(List<Book> books) {
+                    updateView(books);
 
-            }
-        };
-        loadBooksTask.execute();
+                }
+            };
+            loadBooksTask.execute();
+        } else {
+            InternetAccess.showNoInternetConnection(getApplicationContext());
+        }
     }
 
     private void updateView(List<Book> bookList) {

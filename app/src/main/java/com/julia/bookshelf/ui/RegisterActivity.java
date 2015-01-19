@@ -1,13 +1,16 @@
 package com.julia.bookshelf.ui;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.julia.bookshelf.R;
+import com.julia.bookshelf.model.data.User;
 import com.julia.bookshelf.model.http.InternetAccess;
 import com.julia.bookshelf.model.tasks.RegisterUserTask;
 
@@ -43,7 +46,16 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
         if (isCorrectEmail & isEnoughPasswordLength & isTheSamePassword & !isEmptyUsername) {
 
             if (InternetAccess.isInternetConnection(getApplicationContext())) {
-                RegisterUserTask registerUserTask = new RegisterUserTask();
+                RegisterUserTask registerUserTask = new RegisterUserTask() {
+                    @Override
+                    protected void onPostExecute(User user) {
+                        if (user != null) {
+                            createBookListActivity();
+                        } else {
+                            Toast.makeText(getApplicationContext(), getString(R.string.user_already_exists), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                };
                 registerUserTask.execute(username, password, email);
             } else {
                 InternetAccess.showNoInternetConnection(getApplicationContext());
@@ -62,5 +74,10 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
                 txtConfirmPassword.setError(getString(R.string.not_confirmed_password));
             }
         }
+    }
+
+    private void createBookListActivity() {
+        Intent intent = new Intent(this, BookListActivity.class);
+        startActivity(intent);
     }
 }

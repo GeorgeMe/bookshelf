@@ -28,7 +28,7 @@ public class HTTPClient {
             addHeaders(connection);
             connection.connect();
             responseCode = connection.getResponseCode();
-            if(responseCode == HttpStatus.SC_OK) {
+            if (responseCode == HttpStatus.SC_OK) {
                 in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 String inputLine;
                 stringBuilder = new StringBuilder();
@@ -42,7 +42,7 @@ public class HTTPClient {
             closeStream(in);
         }
         String json = stringBuilder != null ? stringBuilder.toString() : null;
-        return new HTTPResponse(responseCode,json);
+        return new HTTPResponse(responseCode, json);
     }
 
     private static void addHeaders(URLConnection connection) {
@@ -60,7 +60,10 @@ public class HTTPClient {
         }
     }
 
-    public static void post(String path, JSONObject jsonObject) {
+    public static HTTPResponse post(String path, JSONObject jsonObject) {
+        int responseCode = 0;
+        StringBuilder stringBuilder = null;
+        BufferedReader in;
         try {
             URL url = new URL(path);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -69,14 +72,26 @@ public class HTTPClient {
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type", "application/json");
             connection.setRequestProperty("charset", "utf-8");
-//            connection.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
             DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
             wr.writeBytes(jsonObject.toString());
-            int responseCode = connection.getResponseCode();
+
+            responseCode = connection.getResponseCode();
+            stringBuilder = new StringBuilder();
+
+            if (responseCode == HttpStatus.SC_CREATED) {
+                in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String inputLine;
+                stringBuilder = new StringBuilder();
+                while ((inputLine = in.readLine()) != null) {
+                    stringBuilder.append(inputLine);
+                }
+            }
             Log.i("BOOKSHELF", "Response:" + responseCode);
         } catch (IOException e) {
             Log.w("BOOKSHELF", e.toString());
         }
+        String json = stringBuilder != null ? stringBuilder.toString() : null;
+        return new HTTPResponse(responseCode, json);
     }
 
 }

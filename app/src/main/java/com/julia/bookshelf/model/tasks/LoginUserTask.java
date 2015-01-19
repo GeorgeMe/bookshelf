@@ -26,8 +26,8 @@ public class LoginUserTask extends AsyncTask<Void, Void, User> {
     protected User doInBackground(Void... params) {
         User user = null;
         HTTPResponse response = HTTPClient.get(URLCreator.createUser(username, password));
-        if (response.isSuccess()) {
-            user = JSONParser.parseUser(response.getJson());
+        if (response.isSuccessLogin()) {
+            user = JSONParser.parseLogedUser(response.getJson());
         }
         return user;
     }

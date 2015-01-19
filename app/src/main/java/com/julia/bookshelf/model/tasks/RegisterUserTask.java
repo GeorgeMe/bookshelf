@@ -5,7 +5,9 @@ import android.util.Log;
 
 import com.julia.bookshelf.model.data.User;
 import com.julia.bookshelf.model.http.HTTPClient;
+import com.julia.bookshelf.model.http.HTTPResponse;
 import com.julia.bookshelf.model.http.URLCreator;
+import com.julia.bookshelf.model.parsers.JSONParser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,7 +15,7 @@ import org.json.JSONObject;
 /**
  * Created by Julia on 16.01.2015.
  */
-public class RegisterUserTask extends AsyncTask<String,Void,User>{
+public class RegisterUserTask extends AsyncTask<String, Void, User> {
     @Override
     protected User doInBackground(String... params) {
         JSONObject jsonObject = new JSONObject();
@@ -23,11 +25,14 @@ public class RegisterUserTask extends AsyncTask<String,Void,User>{
         User user = null;
         try {
             jsonObject.put("username", username);
-            jsonObject.put("password",password);
+            jsonObject.put("password", password);
             jsonObject.put("email", email);
-            HTTPClient.post(URLCreator.registerUser(), jsonObject);
-
-            user= new User();
+            HTTPResponse httpResponse = HTTPClient.post(URLCreator.registerUser(), jsonObject);
+            if (httpResponse.isSuccessRegister()) {
+                user = JSONParser.parseRegisteredUser(httpResponse.getJson());
+                user.setUsername(username);
+                user.setEmail(email);
+            }
         } catch (JSONException e) {
             Log.w("BOOKSHELF", e.toString());
         }

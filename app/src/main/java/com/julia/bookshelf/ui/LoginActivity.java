@@ -24,6 +24,10 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
+        initView();
+    }
+
+    private void initView() {
         Button btnLogin = (Button) findViewById(R.id.btn_log_in);
         TextView txtRegister = (TextView) findViewById(R.id.txt_sign_up);
         btnLogin.setOnClickListener(this);
@@ -49,16 +53,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
                 if (isEnoughPasswordLength & !isEmptyUsername) {
                     if (InternetAccess.isInternetConnection(getApplicationContext())) {
-                        LoginUserTask loginUserTask = new LoginUserTask(username, password) {
-                            @Override
-                            protected void onPostExecute(User user) {
-                                if (user == null) {
-                                    Toast.makeText(getApplicationContext(), getString(R.string.incorrect_username_or_password), Toast.LENGTH_SHORT).show();
-                                } else{//todo: call BookListActivity}
-                                    Log.i("BOOKSHELF","User is not null");
-                                }
-                            }};
-                        loginUserTask.execute();
+                        loginUser(username, password);
                     } else {
                         InternetAccess.showNoInternetConnection(getApplicationContext());
                     }
@@ -72,7 +67,25 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                 }
             }
         }
+    }
 
+    private void loginUser(final String username, final String password) {
+        LoginUserTask loginUserTask = new LoginUserTask(username, password) {
+            @Override
+            protected void onPostExecute(User user) {
+                if (user == null) {
+                    Toast.makeText(getApplicationContext(), getString(R.string.incorrect_username_or_password), Toast.LENGTH_SHORT).show();
+                } else {
+                    createBookListActivity();
+                    Log.i("BOOKSHELF", "User is not null");
+                }
+            }
+        };
+        loginUserTask.execute();
+    }
 
+    private void createBookListActivity() {
+        Intent intent = new Intent(this, BookListActivity.class);
+        startActivity(intent);
     }
 }

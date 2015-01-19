@@ -13,4 +13,5 @@
     <string name="empty_username">Empty username</string>
     <string name="no_internet_connection">No internet connection</string>
     <string name="incorrect_username_or_password">Incorrect login or password</string>
+    <string name="user_already_exists">User with such username or email already exists</string>
 </resources>
