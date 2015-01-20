@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.example.julia.bookshelf.R;
+import com.julia.bookshelf.R;
 import com.julia.bookshelf.model.data.Book;
 import com.squareup.picasso.Picasso;
 

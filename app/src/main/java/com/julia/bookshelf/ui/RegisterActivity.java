@@ -9,9 +9,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.julia.bookshelf.R;
+import com.julia.bookshelf.R;
 import com.julia.bookshelf.model.data.User;
 import com.julia.bookshelf.model.http.InternetAccess;
+import com.julia.bookshelf.model.pref.PreferencesManager;
 import com.julia.bookshelf.model.tasks.RegisterUserTask;
 
 /**
@@ -50,6 +51,7 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
                     @Override
                     protected void onPostExecute(User user) {
                         if (user != null) {
+                            PreferencesManager.saveUser(getApplicationContext(), user);
                             createBookListActivity();
                         } else {
                             Toast.makeText(getApplicationContext(), getString(R.string.user_already_exists), Toast.LENGTH_SHORT).show();

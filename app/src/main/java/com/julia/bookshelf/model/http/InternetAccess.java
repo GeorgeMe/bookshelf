@@ -5,7 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.widget.Toast;
 
-import com.example.julia.bookshelf.R;
+import com.julia.bookshelf.R;
 
 /**
  * Created by Julia on 16.01.2015.

@@ -6,7 +6,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.example.julia.bookshelf.R;
+import com.julia.bookshelf.R;
 import com.julia.bookshelf.model.data.Book;
 import com.julia.bookshelf.model.http.InternetAccess;
 import com.julia.bookshelf.model.tasks.LoadBooksTask;

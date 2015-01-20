@@ -1,5 +1,6 @@
 package com.julia.bookshelf.model.parsers;
 
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.julia.bookshelf.model.data.Book;
@@ -38,9 +39,11 @@ public class JSONParser {
         return bookList;
     }
 
+    @Nullable
     public static User parseLogedUser(String json) {
-        User user = new User();
+        User user = null;
         try {
+            user = new User();
             JSONObject jsonObject = new JSONObject(json);
             user.setUsername(jsonObject.getString("username"));
             user.setEmail(jsonObject.getString("email"));
@@ -50,7 +53,8 @@ public class JSONParser {
         }
         return user;
     }
-    public static User parseRegisteredUser(String json){
+
+    public static User parseRegisteredUser(String json) {
         User user = new User();
         try {
             JSONObject jsonObject = new JSONObject(json);

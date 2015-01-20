@@ -3,16 +3,16 @@ package com.julia.bookshelf.ui;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.julia.bookshelf.R;
+import com.julia.bookshelf.R;
 import com.julia.bookshelf.model.data.User;
 import com.julia.bookshelf.model.http.InternetAccess;
+import com.julia.bookshelf.model.pref.PreferencesManager;
 import com.julia.bookshelf.model.tasks.LoginUserTask;
 
 /**
@@ -20,11 +20,18 @@ import com.julia.bookshelf.model.tasks.LoginUserTask;
  */
 public class LoginActivity extends Activity implements View.OnClickListener {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login);
-        initView();
+        User user = PreferencesManager.loadUser(getApplicationContext());
+        if (user != null) {
+            createBookListActivity();
+        } else {
+            setContentView(R.layout.login);
+            initView();
+        }
+
     }
 
     private void initView() {
@@ -76,13 +83,14 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                 if (user == null) {
                     Toast.makeText(getApplicationContext(), getString(R.string.incorrect_username_or_password), Toast.LENGTH_SHORT).show();
                 } else {
+                    PreferencesManager.saveUser(getApplicationContext(), user);
                     createBookListActivity();
-                    Log.i("BOOKSHELF", "User is not null");
                 }
             }
         };
         loginUserTask.execute();
     }
+
 
     private void createBookListActivity() {
         Intent intent = new Intent(this, BookListActivity.class);

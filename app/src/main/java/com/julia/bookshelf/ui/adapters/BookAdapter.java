@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.julia.bookshelf.R;
+import com.julia.bookshelf.R;
 import com.julia.bookshelf.model.data.Book;
 import com.squareup.picasso.Picasso;
 
@@ -65,8 +65,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.book_list_item, viewGroup, false);
-        ViewHolder viewHolder = new ViewHolder((CardView) v);
-        return viewHolder;
+        return new ViewHolder((CardView) v);
     }
 
     @Override
