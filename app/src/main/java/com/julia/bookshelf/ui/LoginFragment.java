@@ -124,7 +124,7 @@ public class LoginFragment extends Fragment {
     }
 
     private void startBookListActivity() {
-        Intent intent = new Intent(getContext(), BookListActivity.class);
+        Intent intent = new Intent(getContext(), HomeActivity.class);
         startActivity(intent);
         getActivity().finish();
     }

@@ -102,7 +102,7 @@ public class RegisterFragment extends Fragment {
             protected void onPostExecute(User user) {
                 if (user != null) {
                     PreferencesManager.saveUser(getActivity().getApplicationContext(), user);
-                    createBookListActivity();
+                    startBookListActivity();
                 } else {
                     Toast.makeText(getActivity().getApplicationContext(), getString(R.string.user_already_exists), Toast.LENGTH_SHORT).show();
                 }
@@ -111,8 +111,8 @@ public class RegisterFragment extends Fragment {
         registerUserTask.execute(username, password, email);
     }
 
-    private void createBookListActivity() {
-        Intent intent = new Intent(getActivity().getApplicationContext(), BookListActivity.class);
+    private void startBookListActivity() {
+        Intent intent = new Intent(getActivity().getApplicationContext(), HomeActivity.class);
         startActivity(intent);
         getActivity().finish();
     }

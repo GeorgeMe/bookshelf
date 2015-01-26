@@ -26,7 +26,7 @@ public class LoginActivity extends Activity implements LoginFragment.OnRegisterC
     }
 
     private void startBookListActivity() {
-        Intent intent = new Intent(this, BookListActivity.class);
+        Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
         finish();
     }
