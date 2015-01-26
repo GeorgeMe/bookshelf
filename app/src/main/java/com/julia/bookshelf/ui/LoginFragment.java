@@ -1,8 +1,7 @@
 package com.julia.bookshelf.ui;
 
 import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -24,60 +23,89 @@ import com.julia.bookshelf.model.tasks.LoginUserTask;
  * Created by Julia on 21.01.2015.
  */
 public class LoginFragment extends Fragment {
+
+    public interface OnRegisterClickedListener {
+        public void onRegisterClicked();
+    }
+
+    private EditText txtUsername;
+    private EditText txtPassword;
+
+    public static Fragment newInstance(){
+        return new LoginFragment();
+    }
+
+    public static Fragment newInstance(int value){
+        LoginFragment fragment = new LoginFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt("key", value);
+        fragment.setArguments(bundle);
+
+        return fragment;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View view = inflater.inflate(
-                R.layout.login, container, false);
+        return inflater.inflate(R.layout.login, container, false);
+    }
+
+    @Override
+    public void onViewCreated(final View view, Bundle savedInstanceState) {
+        txtUsername = (EditText) view.findViewById(R.id.txt_username);
+        txtPassword = (EditText) view.findViewById(R.id.txt_password);
+
         Button btnLogin = (Button) view.findViewById(R.id.btn_log_in);
         TextView txtRegister = (TextView) view.findViewById(R.id.txt_sign_up);
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkAndLoginUser(view);
+                onLoginClicked();
             }
         });
         txtRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createRegisterFragment();
+                getListener().onRegisterClicked();
             }
         });
-        return view;
     }
 
-    private void createRegisterFragment() {
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        RegisterFragment registerFragment = new RegisterFragment();
-        fragmentTransaction.replace(android.R.id.content, registerFragment);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
-    }
-
-    private void checkAndLoginUser(View view) {
-        EditText txtUsername = (EditText) view.findViewById(R.id.txt_username);
-        EditText txtPassword = (EditText) view.findViewById(R.id.txt_password);
-
-        String username = txtUsername.getText().toString();
-        String password = txtPassword.getText().toString();
-
-        boolean isEmptyUsername = username.isEmpty();
-        boolean isEnoughPasswordLength = password.length() > getResources().getInteger(R.integer.min_password_length);
-        if (isEnoughPasswordLength & !isEmptyUsername) {
-            if (InternetAccess.isInternetConnection(getActivity().getApplicationContext())) {
-                loginUser(username, password);
-            } else {
-                InternetAccess.showNoInternetConnection(getActivity().getApplicationContext());
+    private void onLoginClicked() {
+        if (InternetAccess.isInternetConnection(getContext())) {
+            if (isDataValid()) {
+                loginUser(getUsername(), getPassword());
             }
         } else {
-            if (!isEnoughPasswordLength) {
-                txtPassword.setError(getString(R.string.too_short_password));
-            }
-            if (isEmptyUsername) {
-                txtUsername.setError(getString(R.string.empty_username));
-            }
+            InternetAccess.showNoInternetConnection(getContext());
         }
+    }
+
+    private boolean isDataValid() {
+        boolean isUsernameValid = !getUsername().isEmpty();
+        boolean isPasswordValid =
+                getPassword().length() > getResources().getInteger(R.integer.min_password_length);
+
+        if (!isPasswordValid) {
+            txtPassword.setError(getString(R.string.too_short_password));
+        }
+        if (!isUsernameValid) {
+            txtUsername.setError(getString(R.string.empty_username));
+        }
+
+        return isUsernameValid && isPasswordValid;
+    }
+
+    private Context getContext() {
+        return getActivity().getApplicationContext();
+    }
+
+    private String getPassword() {
+        return txtPassword.getText().toString();
+    }
+
+    private String getUsername() {
+        return txtUsername.getText().toString();
     }
 
     private void loginUser(final String username, final String password) {
@@ -85,19 +113,23 @@ public class LoginFragment extends Fragment {
             @Override
             protected void onPostExecute(User user) {
                 if (user == null) {
-                    Toast.makeText(getActivity().getApplicationContext(), getString(R.string.incorrect_username_or_password), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getString(R.string.incorrect_username_or_password), Toast.LENGTH_SHORT).show();
                 } else {
-                    PreferencesManager.saveUser(getActivity().getApplicationContext(), user);
-                    createBookListActivity();
+                    PreferencesManager.saveUser(getContext(), user);
+                    startBookListActivity();
                 }
             }
         };
         loginUserTask.execute();
     }
 
-    private void createBookListActivity() {
-        Intent intent = new Intent(getActivity().getApplicationContext(), BookListActivity.class);
+    private void startBookListActivity() {
+        Intent intent = new Intent(getContext(), BookListActivity.class);
         startActivity(intent);
         getActivity().finish();
+    }
+
+    private OnRegisterClickedListener getListener() {
+        return (OnRegisterClickedListener) getActivity();
     }
 }

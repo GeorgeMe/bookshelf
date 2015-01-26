@@ -22,57 +22,78 @@ import com.julia.bookshelf.model.tasks.RegisterUserTask;
  * Created by Julia on 21.01.2015.
  */
 public class RegisterFragment extends Fragment {
+    private EditText txtUsername;
+    private EditText txtPassword;
+    private EditText txtConfirmPassword;
+    private EditText txtEmail;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.register, container, false);
+        return inflater.inflate(R.layout.register, container, false);
+    }
+
+    @Override
+    public void onViewCreated(final View view, Bundle savedInstanceState) {
+        txtUsername = (EditText) view.findViewById(R.id.txt_username);
+        txtPassword = (EditText) view.findViewById(R.id.txt_password);
+        txtConfirmPassword = (EditText) view.findViewById(R.id.txt_confirm_password);
+        txtEmail = (EditText) view.findViewById(R.id.txt_email);
+
         Button btnRegister = (Button) view.findViewById(R.id.btn_register);
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkAndRegisterUser(view);
+                onRegisterClicked();
             }
         });
-        return view;
     }
 
-    private void checkAndRegisterUser(View view) {
-        EditText txtUsername = (EditText) view.findViewById(R.id.txt_username);
-        EditText txtPassword = (EditText) view.findViewById(R.id.txt_password);
-        EditText txtConfirmPassword = (EditText) view.findViewById(R.id.txt_confirm_password);
-        EditText txtEmail = (EditText) view.findViewById(R.id.txt_email);
-
-        String username = txtUsername.getText().toString();
-        String password = txtPassword.getText().toString();
-        String confirmPassword = txtConfirmPassword.getText().toString();
-        String email = txtEmail.getText().toString();
-
-        boolean isEmptyUsername = username.isEmpty();
-        boolean isCorrectEmail = Patterns.EMAIL_ADDRESS.matcher(email).matches();
-        boolean isEnoughPasswordLength = txtPassword.getText().length() > getResources().getInteger(R.integer.min_password_length);
-        boolean isTheSamePassword = password.equals(confirmPassword);
-
-        if (isCorrectEmail & isEnoughPasswordLength & isTheSamePassword & !isEmptyUsername) {
-
-            if (InternetAccess.isInternetConnection(getActivity().getApplicationContext())) {
-                registerUser(username, password, email);
-            } else {
-                InternetAccess.showNoInternetConnection(getActivity().getApplicationContext());
+    private void onRegisterClicked() {
+        if (InternetAccess.isInternetConnection(getActivity().getApplicationContext())) {
+            if (isDataValid()) {
             }
+            registerUser(getUsername(), getPassword(), getEmail());
         } else {
-            if (isEmptyUsername) {
-                txtUsername.setError(getString(R.string.empty_username));
-            }
-            if (!isCorrectEmail) {
-                txtEmail.setError(getString(R.string.incorrect_email));
-            }
-            if (!isEnoughPasswordLength) {
-                txtPassword.setError(getString(R.string.too_short_password));
-            }
-            if (!isTheSamePassword) {
-                txtConfirmPassword.setError(getString(R.string.not_confirmed_password));
-            }
+            InternetAccess.showNoInternetConnection(getActivity().getApplicationContext());
         }
+    }
+
+    private boolean isDataValid() {
+        boolean isValidUsername = !getUsername().isEmpty();
+        boolean isValidEmail = Patterns.EMAIL_ADDRESS.matcher(getEmail()).matches();
+        boolean isValidPassword = txtPassword.getText().length() > getResources().getInteger(R.integer.min_password_length);
+        boolean isConfirmedPassword = getPassword().equals(getConfirmedPassword());
+
+        if (!isValidUsername) {
+            txtUsername.setError(getString(R.string.empty_username));
+        }
+        if (!isValidEmail) {
+            txtEmail.setError(getString(R.string.incorrect_email));
+        }
+        if (!isValidPassword) {
+            txtPassword.setError(getString(R.string.too_short_password));
+        }
+        if (!isConfirmedPassword) {
+            txtConfirmPassword.setError(getString(R.string.not_confirmed_password));
+        }
+        return isValidEmail && isValidPassword && isConfirmedPassword && isValidUsername;
+    }
+
+    private String getEmail() {
+        return txtEmail.getText().toString();
+    }
+
+    private String getConfirmedPassword() {
+        return txtConfirmPassword.getText().toString();
+    }
+
+    private String getPassword() {
+        return txtPassword.getText().toString();
+    }
+
+    private String getUsername() {
+        return txtUsername.getText().toString();
     }
 
     private void registerUser(String username, String password, String email) {
