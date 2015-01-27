@@ -23,7 +23,7 @@ import java.util.List;
  */
 public class BookListFragment extends Fragment {
     public interface OnListItemClickedListener {
-        public void onListItemClicked(int position, BookAdapter adapter);
+        public void onListItemClicked(Book book);
     }
 
     private BookAdapter rvAdapter;
@@ -69,7 +69,7 @@ public class BookListFragment extends Fragment {
         rvAdapter.setOnItemCleckListener(new BookAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
-                getListener().onListItemClicked(position, rvAdapter);
+                getListener().onListItemClicked(rvAdapter.getBook(position));
             }
         });
         rvBookList.setAdapter(rvAdapter);

@@ -14,4 +14,13 @@
     <string name="no_internet_connection">No internet connection</string>
     <string name="incorrect_username_or_password">Incorrect login or password</string>
     <string name="user_already_exists">User with such username or email already exists</string>
+    <string name="drawer_opened">Drawer opened</string>
+    <string name="drawer_closed">Drawer closed</string>
+
+    <string-array name="actions">
+        <item>Explorer</item>
+        <item>Favourite</item>
+        <item>About Us</item>
+        <item>Log out</item>
+    </string-array>
 </resources>
