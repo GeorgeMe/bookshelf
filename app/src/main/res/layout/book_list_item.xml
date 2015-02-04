@@ -54,7 +54,7 @@
             android:id="@+id/img_favourite"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:src="@drawable/ic_action_not_important"
+            android:src="@drawable/ic_action_not_favourite"
             android:scaleType="centerInside"/>
     </LinearLayout>
 

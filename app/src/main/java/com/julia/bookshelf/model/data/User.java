@@ -4,9 +4,18 @@ package com.julia.bookshelf.model.data;
  * Created by Julia on 16.01.2015.
  */
 public class User {
+    private String id;
     private String username;
-private String sessionToken;
+    private String sessionToken;
     private String email;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getUsername() {
         return username;

@@ -7,6 +7,7 @@ import android.os.Parcelable;
  * Created by Julia on 18.11.2014.
  */
 public class Book implements Parcelable {
+    private String id;
     private String cover;
     private String title;
     private String author;
@@ -15,9 +16,9 @@ public class Book implements Parcelable {
     private int userRating;
     private int generalRating;
     private int people;
-    private boolean isFavourite;
 
     public Book(Parcel parcel) {
+        this.id=parcel.readString();
         this.cover = parcel.readString();
         this.title = parcel.readString();
         this.author = parcel.readString();
@@ -26,10 +27,17 @@ public class Book implements Parcelable {
         this.userRating = parcel.readInt();
         this.generalRating = parcel.readInt();
         this.people = parcel.readInt();
-        this.isFavourite = parcel.readByte() != 0;
     }
 
     public Book() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getCover() {
@@ -64,10 +72,6 @@ public class Book implements Parcelable {
         return people;
     }
 
-    public boolean isFavourite() {
-        return isFavourite;
-    }
-
     public void setCover(String cover) {
         this.cover = cover;
     }
@@ -100,9 +104,6 @@ public class Book implements Parcelable {
         this.people = people;
     }
 
-    public void setFavourite(boolean isFavourite) {
-        this.isFavourite = isFavourite;
-    }
 
     @Override
     public int describeContents() {
@@ -111,6 +112,7 @@ public class Book implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
         dest.writeString(cover);
         dest.writeString(title);
         dest.writeString(author);
@@ -119,7 +121,6 @@ public class Book implements Parcelable {
         dest.writeInt(userRating);
         dest.writeInt(generalRating);
         dest.writeInt(people);
-        dest.writeByte((byte) (isFavourite ? 1 : 0));
     }
 
     public static final Parcelable.Creator<Book> CREATOR = new Parcelable.Creator<Book>() {

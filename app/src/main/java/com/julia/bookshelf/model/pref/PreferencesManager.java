@@ -14,32 +14,43 @@ import org.json.JSONObject;
  * Created by Julia on 20.01.2015.
  */
 public class PreferencesManager {
-    private static final String PREFS_NAME = "Account";
-    private static final String KEY = "user";
+    private static final String PREFS_NAME = "book-shelf-pref";
+    private static final String KEY_USER = "user";
+    private Context context;
 
-    public static void saveUser(Context context, User user) {
-        SharedPreferences account = context.getSharedPreferences(PREFS_NAME, context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = account.edit();
+    public PreferencesManager(Context context) {
+        this.context = context;
+    }
+
+    public void saveUser(User user) {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("username", user.getUsername());
             jsonObject.put("email", user.getEmail());
             jsonObject.put("sessionToken", user.getSessionToken());
-            editor.putString(KEY, jsonObject.toString());
-            editor.commit();
+            jsonObject.put("objectId", user.getId());
+            getSharedPreferences().edit().putString(KEY_USER, jsonObject.toString()).commit();
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
     @Nullable
-    public static User loadUser(Context context) {
-        SharedPreferences account = context.getSharedPreferences(PREFS_NAME, context.MODE_PRIVATE);
-        String result = account.getString(KEY, null);
+    public User loadUser() {
+        SharedPreferences account = getSharedPreferences();
+        String result = account.getString(KEY_USER, null);
         User user = null;
         if (result != null) {
             user = JSONParser.parseLogedUser(result);
         }
         return user;
+    }
+
+    public void clearUser(){
+        getSharedPreferences().edit().remove(KEY_USER).commit();
+    }
+
+    private SharedPreferences getSharedPreferences() {
+        return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
     }
 }

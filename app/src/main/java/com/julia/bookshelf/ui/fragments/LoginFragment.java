@@ -1,4 +1,4 @@
-package com.julia.bookshelf.ui;
+package com.julia.bookshelf.ui.fragments;
 
 import android.app.Fragment;
 import android.content.Context;
@@ -16,13 +16,13 @@ import android.widget.Toast;
 import com.julia.bookshelf.R;
 import com.julia.bookshelf.model.data.User;
 import com.julia.bookshelf.model.http.InternetAccess;
-import com.julia.bookshelf.model.pref.PreferencesManager;
 import com.julia.bookshelf.model.tasks.LoginUserTask;
+import com.julia.bookshelf.ui.activity.HomeActivity;
 
 /**
  * Created by Julia on 21.01.2015.
  */
-public class LoginFragment extends Fragment {
+public class LoginFragment extends BaseFragment {
 
     public interface OnRegisterClickedListener {
         public void onRegisterClicked();
@@ -31,11 +31,11 @@ public class LoginFragment extends Fragment {
     private EditText txtUsername;
     private EditText txtPassword;
 
-    public static Fragment newInstance(){
+    public static Fragment newInstance() {
         return new LoginFragment();
     }
 
-    public static Fragment newInstance(int value){
+    public static Fragment newInstance(int value) {
         LoginFragment fragment = new LoginFragment();
         Bundle bundle = new Bundle();
         bundle.putInt("key", value);
@@ -115,7 +115,7 @@ public class LoginFragment extends Fragment {
                 if (user == null) {
                     Toast.makeText(getContext(), getString(R.string.incorrect_username_or_password), Toast.LENGTH_SHORT).show();
                 } else {
-                    PreferencesManager.saveUser(getContext(), user);
+                    getPreferences().saveUser(user);
                     startBookListActivity();
                 }
             }

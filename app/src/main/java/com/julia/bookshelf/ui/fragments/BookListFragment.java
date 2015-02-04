@@ -1,4 +1,4 @@
-package com.julia.bookshelf.ui;
+package com.julia.bookshelf.ui.fragments;
 
 import android.app.Fragment;
 import android.content.Context;

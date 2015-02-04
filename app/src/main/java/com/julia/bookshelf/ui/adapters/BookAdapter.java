@@ -73,11 +73,11 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
         Book book = books.get(i);
         viewHolder.title.setText(book.getTitle());
         viewHolder.author.setText(book.getAuthor());
-        if (book.isFavourite()) {
-            viewHolder.isFavourite.setImageResource(R.drawable.ic_action_important);
-        } else {
-            viewHolder.isFavourite.setImageResource(R.drawable.ic_action_not_important);
-        }
+//        if (book.isFavourite()) {
+//            viewHolder.isFavourite.setImageResource(R.drawable.ic_action_favourite);
+//        } else {
+//            viewHolder.isFavourite.setImageResource(R.drawable.ic_action_not_favourite);
+//        }
         Picasso.with(context).load(book.getCover()).into(viewHolder.cover);
     }
 

@@ -41,6 +41,7 @@ public class HTTPClient {
         } finally {
             closeStream(in);
         }
+        Log.i("bookshelf/", "URL: " + path + " response: " + String.valueOf(responseCode));
         String json = stringBuilder != null ? stringBuilder.toString() : null;
         return new HTTPResponse(responseCode, json);
     }
@@ -86,12 +87,14 @@ public class HTTPClient {
                     stringBuilder.append(inputLine);
                 }
             }
-            Log.i("BOOKSHELF", "Response:" + responseCode);
+
         } catch (IOException e) {
             Log.w("BOOKSHELF", e.toString());
         }
         String json = stringBuilder != null ? stringBuilder.toString() : null;
+        Log.i("Bookshelf", "response - " + responseCode);
         return new HTTPResponse(responseCode, json);
     }
+
 
 }

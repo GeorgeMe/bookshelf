@@ -1,6 +1,5 @@
-package com.julia.bookshelf.ui;
+package com.julia.bookshelf.ui.fragments;
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,13 +14,13 @@ import android.widget.Toast;
 import com.julia.bookshelf.R;
 import com.julia.bookshelf.model.data.User;
 import com.julia.bookshelf.model.http.InternetAccess;
-import com.julia.bookshelf.model.pref.PreferencesManager;
 import com.julia.bookshelf.model.tasks.RegisterUserTask;
+import com.julia.bookshelf.ui.activity.HomeActivity;
 
 /**
  * Created by Julia on 21.01.2015.
  */
-public class RegisterFragment extends Fragment {
+public class RegisterFragment extends BaseFragment {
     private EditText txtUsername;
     private EditText txtPassword;
     private EditText txtConfirmPassword;
@@ -101,7 +100,7 @@ public class RegisterFragment extends Fragment {
             @Override
             protected void onPostExecute(User user) {
                 if (user != null) {
-                    PreferencesManager.saveUser(getActivity().getApplicationContext(), user);
+                    getPreferences().saveUser(user);
                     startBookListActivity();
                 } else {
                     Toast.makeText(getActivity().getApplicationContext(), getString(R.string.user_already_exists), Toast.LENGTH_SHORT).show();

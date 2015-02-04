@@ -25,12 +25,13 @@ public class JSONParser {
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 book = new Book();
+                book.setId(jsonObject.getString("objectId"));
                 book.setTitle(jsonObject.getString("title"));
                 book.setAuthor(jsonObject.getString("author"));
                 book.setCover(jsonObject.getString("cover"));
                 book.setGenre(jsonObject.getString("genre"));
                 book.setAnnotation(jsonObject.getString("annotation"));
-                book.setFavourite(jsonObject.getBoolean("isFavourite"));
+
                 bookList.add(book);
             }
         } catch (JSONException e) {
@@ -48,6 +49,7 @@ public class JSONParser {
             user.setUsername(jsonObject.getString("username"));
             user.setEmail(jsonObject.getString("email"));
             user.setSessionToken(jsonObject.getString("sessionToken"));
+            user.setId(jsonObject.getString("objectId"));
         } catch (JSONException e) {
             Log.w("BOOKSHELF", e.toString());
         }
@@ -59,10 +61,27 @@ public class JSONParser {
         try {
             JSONObject jsonObject = new JSONObject(json);
             user.setSessionToken(jsonObject.getString("sessionToken"));
+            user.setId(jsonObject.getString("objectId"));
         } catch (JSONException e) {
             Log.w("BOOKSHELF", e.toString());
         }
         return user;
+    }
+
+    public static ArrayList<String> parseFavouriteBooksId(String json) {
+        ArrayList<String> idArray = new ArrayList<>();
+        Log.i("bookshelf", json);
+        try {
+            JSONObject reader = new JSONObject(json);
+            JSONArray jsonArray = reader.getJSONArray("results");
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                idArray.add(jsonObject.getString("bookId"));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return idArray;
     }
 
 }
