@@ -4,6 +4,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.julia.bookshelf.model.data.Book;
+import com.julia.bookshelf.model.data.FavouriteBook;
 import com.julia.bookshelf.model.data.User;
 
 import org.json.JSONArray;
@@ -68,20 +69,51 @@ public class JSONParser {
         return user;
     }
 
-    public static ArrayList<String> parseFavouriteBooksId(String json) {
-        ArrayList<String> idArray = new ArrayList<>();
-        Log.i("bookshelf", json);
+    public static ArrayList<FavouriteBook> parseFavouriteBooksFromServer(String json) {
+        ArrayList<FavouriteBook> favouriteBooksList = new ArrayList<>();
+        FavouriteBook favouriteBook;
         try {
             JSONObject reader = new JSONObject(json);
             JSONArray jsonArray = reader.getJSONArray("results");
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                idArray.add(jsonObject.getString("bookId"));
+                favouriteBook = new FavouriteBook(jsonObject.getString("objectId"), jsonObject.getString("bookId"));
+                favouriteBooksList.add(favouriteBook);
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return idArray;
+        return favouriteBooksList;
+    }
+
+    public static ArrayList<FavouriteBook> parseFavouriteBooksFromPreferences(String json) {
+        ArrayList<FavouriteBook> favouriteBooksList = new ArrayList<>();
+        FavouriteBook favouriteBook;
+        try {
+            JSONArray jsonArray = new JSONArray(json);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                String objectId = jsonObject.optString("objectId",null);
+                String bookId = jsonObject.getString("bookId");
+                favouriteBook = new FavouriteBook(objectId, bookId);
+                favouriteBooksList.add(favouriteBook);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return favouriteBooksList;
+    }
+
+    public static FavouriteBook parseFavouriteBook(String json) {
+        FavouriteBook favouriteBook = null;
+        try {
+            JSONObject jsonObject = new JSONObject(json);
+            favouriteBook = new FavouriteBook(jsonObject.getString("objectId"), null);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return favouriteBook;
     }
 
 }

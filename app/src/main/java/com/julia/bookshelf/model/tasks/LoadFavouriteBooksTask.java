@@ -1,9 +1,8 @@
 package com.julia.bookshelf.model.tasks;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
-import com.julia.bookshelf.model.data.Book;
+import com.julia.bookshelf.model.data.FavouriteBook;
 import com.julia.bookshelf.model.data.User;
 import com.julia.bookshelf.model.http.HTTPClient;
 import com.julia.bookshelf.model.http.HTTPResponse;
@@ -13,9 +12,9 @@ import com.julia.bookshelf.model.parsers.JSONParser;
 import java.util.List;
 
 /**
- * Created by Julia on 30.01.2015.
+ * Created by Julia on 04.02.2015.
  */
-public class LoadFavouriteBooksTask extends AsyncTask<Void, Void, List<Book>> {
+public class LoadFavouriteBooksTask extends AsyncTask<Void, Void, List<FavouriteBook>> {
     private User user;
 
     public LoadFavouriteBooksTask(User user) {
@@ -23,11 +22,8 @@ public class LoadFavouriteBooksTask extends AsyncTask<Void, Void, List<Book>> {
     }
 
     @Override
-    protected List<Book> doInBackground(Void... params) {
-        HTTPResponse httpResponse = HTTPClient.get(URLCreator.getFavouriteBooksId(user.getId()));
-        List<String> arr=JSONParser.parseFavouriteBooksId(httpResponse.getJson());
-        HTTPResponse response = HTTPClient.get(URLCreator.getFavouriteBooks(arr));
-        Log.i("bookshelf",response.getJson());
-        return JSONParser.parseBooks(response.getJson());
+    protected List<FavouriteBook> doInBackground(Void... params) {
+        HTTPResponse response = HTTPClient.get(URLCreator.getFavouriteBooks(user.getId()));
+        return JSONParser.parseFavouriteBooksFromServer(response.getJson());
     }
 }

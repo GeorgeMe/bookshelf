@@ -14,9 +14,13 @@ import android.widget.TextView;
 
 import com.julia.bookshelf.R;
 import com.julia.bookshelf.model.data.Book;
+import com.julia.bookshelf.model.data.FavouriteBook;
 import com.julia.bookshelf.model.data.User;
 import com.julia.bookshelf.model.tasks.AddFavouriteBookTask;
+import com.julia.bookshelf.model.tasks.DeleteFavouriteBookTask;
 import com.squareup.picasso.Picasso;
+
+import java.util.List;
 
 
 /**
@@ -24,8 +28,8 @@ import com.squareup.picasso.Picasso;
  */
 public class BookDetailsActivity extends BaseActivity {
     private static final String EXTRAS_BOOK = "EXTRAS_BOOK";
-
-    boolean isFavorite;
+    private boolean isFavorite;
+    private boolean hasChange;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +39,7 @@ public class BookDetailsActivity extends BaseActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle("Book details");
         initView();
+        initFavouriteIcon();
     }
 
     @Override
@@ -42,16 +47,9 @@ public class BookDetailsActivity extends BaseActivity {
         // Handle presses on the action bar items
         switch (item.getItemId()) {
             case R.id.action_favorite:
-                if (!isFavorite) {
-                    isFavorite = true;
-                    invalidateOptionsMenu();
-                    addFavouriteBook();
-                } else {
-                    isFavorite = false;
-                    //todo: delete favourite book
-                    invalidateOptionsMenu();
-
-                }
+                hasChange = !hasChange;
+                isFavorite = !isFavorite;
+                invalidateOptionsMenu();
                 return true;
             case android.R.id.home:
                 finish();
@@ -61,10 +59,39 @@ public class BookDetailsActivity extends BaseActivity {
         }
     }
 
-    private void addFavouriteBook() {
+    @Override
+    protected void onDestroy() {
+        if (hasChange) {
+            Book book = getIntent().getParcelableExtra(EXTRAS_BOOK);
+            if (isFavorite) {
+                getPreferences().addFavouriteBook(book);
+                sendFavouriteBook();
+            } else {
+                //todo: deleting favourite book
+                // from server
+                DeleteFavouriteBookTask deleteFavouriteBookTask = new DeleteFavouriteBookTask(getPreferences().getFavouriteBook(book));
+                deleteFavouriteBookTask.execute();
+                // from prefs
+                getPreferences().deleteFavouriteBook(book);
+
+
+            }
+        }
+        super.onDestroy();
+    }
+
+    private void sendFavouriteBook() {
         Book book = getIntent().getParcelableExtra(EXTRAS_BOOK);
         User user = getPreferences().loadUser();
-        AddFavouriteBookTask addFavouriteBookTask = new AddFavouriteBookTask(user, book);
+        AddFavouriteBookTask addFavouriteBookTask = new AddFavouriteBookTask(user, book) {
+            @Override
+            protected void onPostExecute(FavouriteBook favouriteBook) {
+                super.onPostExecute(favouriteBook);
+                if (favouriteBook != null) {
+                    getPreferences().updateFavouriteBook(favouriteBook);
+                }
+            }
+        };
         addFavouriteBookTask.execute();
     }
 
@@ -76,6 +103,21 @@ public class BookDetailsActivity extends BaseActivity {
             menu.findItem(R.id.action_favorite).setIcon(R.drawable.ic_action_not_favourite);
         }
         return super.onPrepareOptionsMenu(menu);
+    }
+
+    private void initFavouriteIcon() {
+        List<FavouriteBook> favouriteBookList = getPreferences().loadFavouriteBooks();
+        Book book = getIntent().getParcelableExtra(EXTRAS_BOOK);
+        if (favouriteBookList != null) {
+            String id;
+            for (int i = 0; i < favouriteBookList.size(); i++) {
+                id = favouriteBookList.get(i).getBookId();
+                if (book.getId().equals(id)) {
+                    isFavorite = true;
+                    break;
+                }
+            }
+        }
     }
 
     @Override
@@ -105,6 +147,7 @@ public class BookDetailsActivity extends BaseActivity {
         String htmlText = String.format(getString(R.string.Genre), book.getGenre());
         txtGenre.setText(Html.fromHtml(htmlText));
         txtAnnotation.setText(book.getAnnotation());
+
     }
 
     public static void start(Context context, Book book) {

@@ -15,11 +15,15 @@ import android.widget.ListView;
 
 import com.julia.bookshelf.R;
 import com.julia.bookshelf.model.data.Book;
+import com.julia.bookshelf.model.data.FavouriteBook;
+import com.julia.bookshelf.model.tasks.LoadFavouriteBooksTask;
 import com.julia.bookshelf.ui.adapters.DrawerMenuItem;
 import com.julia.bookshelf.ui.adapters.NavigationDrawerAdapter;
 import com.julia.bookshelf.ui.fragments.AboutFragment;
 import com.julia.bookshelf.ui.fragments.BookListFragment;
 import com.julia.bookshelf.ui.fragments.FavouriteBooksFragment;
+
+import java.util.List;
 
 /**
  * Created by Julia on 26.01.2015.
@@ -29,7 +33,6 @@ public class HomeActivity extends BaseActivity implements BookListFragment.OnLis
     public static final int FAVOURITE = 1;
     public static final int ABOUT = 2;
     public static final int LOG_OUT = 3;
-
 
     private DrawerLayout drawerLayout;
     private ListView drawerList;
@@ -47,6 +50,14 @@ public class HomeActivity extends BaseActivity implements BookListFragment.OnLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         showFragment(BookListFragment.newInstance());
+        LoadFavouriteBooksTask loadFavouriteBooksTask = new LoadFavouriteBooksTask(getPreferences().loadUser()){
+            @Override
+            protected void onPostExecute(List<FavouriteBook> favouriteBooks) {
+                getPreferences().clearFavouriteBooks();
+                getPreferences().saveFavouriteBooks(favouriteBooks);
+            }
+        };
+        loadFavouriteBooksTask.execute();
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerList = (ListView) findViewById(R.id.left_drawer);

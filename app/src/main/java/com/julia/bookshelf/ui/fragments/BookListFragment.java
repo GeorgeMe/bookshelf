@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import com.julia.bookshelf.R;
 import com.julia.bookshelf.model.data.Book;
 import com.julia.bookshelf.model.http.InternetAccess;
+import com.julia.bookshelf.model.http.URLCreator;
 import com.julia.bookshelf.model.tasks.LoadBooksTask;
 import com.julia.bookshelf.ui.adapters.BookAdapter;
 
@@ -42,7 +43,7 @@ public class BookListFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         initView(view);
         if (InternetAccess.isInternetConnection(getActivity().getApplicationContext())) {
-            LoadBooksTask loadBooksTask = new LoadBooksTask() {
+            LoadBooksTask loadBooksTask = new LoadBooksTask(URLCreator.loadBook()) {
                 @Override
                 protected void onPostExecute(List<Book> books) {
                     updateView(books);

@@ -24,13 +24,17 @@ public class URLCreator {
         return "https://api.parse.com/1/classes/FavouriteBooks";
     }
 
-    public static String getFavouriteBooksId(String userId) {
+    public static String getFavouriteBooks(String userId) {
         return "https://api.parse.com/1/classes/FavouriteBooks?where={\"userId\":\"" + userId + "\"}";
     }
 
     public static String getFavouriteBooks(List<String> bookIdArray) {
         Log.i("bookshelf", arrayToString(bookIdArray));
         return "https://api.parse.com/1/classes/Book?where={\"objectId\":{\"$in\":[" + arrayToString(bookIdArray) + "]}}";
+    }
+
+    public static String deleteFavouriteBook(String objectId) {
+        return "https://api.parse.com/1/classes/FavouriteBooks/"+objectId;
     }
 
     private static String arrayToString(List<String> array) {

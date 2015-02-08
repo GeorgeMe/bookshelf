@@ -6,14 +6,17 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.julia.bookshelf.R;
 import com.julia.bookshelf.model.data.Book;
 import com.julia.bookshelf.model.http.InternetAccess;
-import com.julia.bookshelf.model.tasks.LoadFavouriteBooksTask;
+import com.julia.bookshelf.model.http.URLCreator;
+import com.julia.bookshelf.model.tasks.LoadBooksTask;
 import com.julia.bookshelf.ui.adapters.BookAdapter;
 
 import java.util.List;
@@ -42,15 +45,25 @@ public class FavouriteBooksFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         initView(view);
         if (InternetAccess.isInternetConnection(getActivity().getApplicationContext())) {
-            LoadFavouriteBooksTask loadFavouriteBooksTask = new LoadFavouriteBooksTask(getPreferences().loadUser()) {
+            loadFavouriteBooks();
+        } else {
+            InternetAccess.showNoInternetConnection(getActivity().getApplicationContext());
+        }
+    }
+
+
+    private void loadFavouriteBooks() {
+        List<String> favouriteBookId = getPreferences().getFavouriteBooksId();
+        if (!favouriteBookId.isEmpty()) {
+            LoadBooksTask loadBooksTask = new LoadBooksTask(URLCreator.getFavouriteBooks(favouriteBookId)) {
                 @Override
                 protected void onPostExecute(List<Book> books) {
                     updateView(books);
                 }
             };
-            loadFavouriteBooksTask.execute();
+            loadBooksTask.execute();
         } else {
-            InternetAccess.showNoInternetConnection(getActivity().getApplicationContext());
+            Toast.makeText(getActivity().getApplicationContext(), "No favourite books", Toast.LENGTH_SHORT).show();
         }
     }
 
