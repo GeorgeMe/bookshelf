@@ -16,6 +16,7 @@ import android.widget.ListView;
 import com.julia.bookshelf.R;
 import com.julia.bookshelf.model.data.Book;
 import com.julia.bookshelf.model.data.FavouriteBook;
+import com.julia.bookshelf.model.http.InternetAccess;
 import com.julia.bookshelf.model.tasks.LoadFavouriteBooksTask;
 import com.julia.bookshelf.ui.adapters.DrawerMenuItem;
 import com.julia.bookshelf.ui.adapters.NavigationDrawerAdapter;
@@ -28,7 +29,7 @@ import java.util.List;
 /**
  * Created by Julia on 26.01.2015.
  */
-public class HomeActivity extends BaseActivity implements BookListFragment.OnListItemClickedListener,FavouriteBooksFragment.OnListItemClickedListener {
+public class HomeActivity extends BaseActivity implements BookListFragment.OnListItemClickedListener, FavouriteBooksFragment.OnListItemClickedListener {
     public static final int EXPLORER = 0;
     public static final int FAVOURITE = 1;
     public static final int ABOUT = 2;
@@ -50,14 +51,18 @@ public class HomeActivity extends BaseActivity implements BookListFragment.OnLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         showFragment(BookListFragment.newInstance());
-        LoadFavouriteBooksTask loadFavouriteBooksTask = new LoadFavouriteBooksTask(getPreferences().loadUser()){
-            @Override
-            protected void onPostExecute(List<FavouriteBook> favouriteBooks) {
-                getPreferences().clearFavouriteBooks();
-                getPreferences().saveFavouriteBooks(favouriteBooks);
-            }
-        };
-        loadFavouriteBooksTask.execute();
+        if (InternetAccess.isInternetConnection(getApplicationContext())) {
+            LoadFavouriteBooksTask loadFavouriteBooksTask = new LoadFavouriteBooksTask(getPreferences().loadUser()) {
+                @Override
+                protected void onPostExecute(List<FavouriteBook> favouriteBooks) {
+                    getPreferences().clearFavouriteBooks();
+                    getPreferences().saveFavouriteBooks(favouriteBooks);
+                }
+            };
+            loadFavouriteBooksTask.execute();
+        } else {
+            InternetAccess.showNoInternetConnection(getApplicationContext());
+        }
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerList = (ListView) findViewById(R.id.left_drawer);
