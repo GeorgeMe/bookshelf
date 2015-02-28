@@ -96,9 +96,7 @@ public class LoginFragment extends BaseFragment {
         return isUsernameValid && isPasswordValid;
     }
 
-    private Context getContext() {
-        return getActivity().getApplicationContext();
-    }
+
 
     private String getPassword() {
         return txtPassword.getText().toString();

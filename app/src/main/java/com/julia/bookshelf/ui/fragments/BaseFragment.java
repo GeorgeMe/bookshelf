@@ -1,6 +1,8 @@
 package com.julia.bookshelf.ui.fragments;
 
 import android.app.Fragment;
+import android.content.ContentValues;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
@@ -21,5 +23,9 @@ public class BaseFragment extends Fragment {
     @NonNull
     public PreferencesManager getPreferences() {
         return preferencesManager;
+    }
+
+    public Context getContext() {
+        return getActivity().getApplicationContext();
     }
 }

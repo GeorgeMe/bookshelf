@@ -11,7 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.julia.bookshelf.R;
+import com.julia.bookshelf.model.dao.BookDAO;
 import com.julia.bookshelf.model.data.Book;
+import com.julia.bookshelf.model.database.BookshelfDatabaseHelper;
+import com.julia.bookshelf.model.database.DatabaseManager;
+import com.julia.bookshelf.model.database.tasks.LoadBooksFromDatabaseTask;
 import com.julia.bookshelf.model.http.InternetAccess;
 import com.julia.bookshelf.model.http.URLCreator;
 import com.julia.bookshelf.model.tasks.LoadBooksTask;
@@ -22,7 +26,7 @@ import java.util.List;
 /**
  * Created by Julia on 26.01.2015.
  */
-public class BookListFragment extends Fragment {
+public class BookListFragment extends BaseFragment {
     public interface OnListItemClickedListener {
         public void onListItemClicked(Book book);
     }
@@ -42,17 +46,38 @@ public class BookListFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         initView(view);
+
+        DatabaseManager.initializeInstance(new BookshelfDatabaseHelper(getContext()));
+        loadBooksFromDatabase();
+
         if (InternetAccess.isInternetConnection(getActivity().getApplicationContext())) {
             LoadBooksTask loadBooksTask = new LoadBooksTask(URLCreator.loadBook()) {
                 @Override
-                protected void onPostExecute(List<Book> books) {
+                protected void onPostExecute(final List<Book> books) {
                     updateView(books);
+                    //todo: save bookList in database
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            new BookDAO().addBookList(books);
+                        }
+                    }).start();
                 }
             };
             loadBooksTask.execute();
         } else {
             InternetAccess.showNoInternetConnection(getActivity().getApplicationContext());
         }
+    }
+
+    private void loadBooksFromDatabase() {
+        LoadBooksFromDatabaseTask loadBooksFromDatabaseTask = new LoadBooksFromDatabaseTask() {
+            @Override
+            protected void onPostExecute(List<Book> books) {
+                updateView(books);
+            }
+        };
+        loadBooksFromDatabaseTask.execute();
     }
 
     private void updateView(List<Book> bookList) {
