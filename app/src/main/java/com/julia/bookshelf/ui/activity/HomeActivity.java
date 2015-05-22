@@ -6,7 +6,6 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,9 +25,6 @@ import com.julia.bookshelf.ui.fragments.FavouriteBooksFragment;
 
 import java.util.List;
 
-/**
- * Created by Julia on 26.01.2015.
- */
 public class HomeActivity extends BaseActivity implements BookListFragment.OnListItemClickedListener, FavouriteBooksFragment.OnListItemClickedListener {
     public static final int EXPLORER = 0;
     public static final int FAVOURITE = 1;
@@ -37,9 +33,7 @@ public class HomeActivity extends BaseActivity implements BookListFragment.OnLis
 
     private DrawerLayout drawerLayout;
     private ListView drawerList;
-    private CharSequence title;
-    private CharSequence drawerTitle;
-    private ActionBarDrawerToggle drawerToggle;
+    private android.support.v7.app.ActionBarDrawerToggle drawerToggle;
 
     @Override
     public void onListItemClicked(Book book) {
@@ -63,32 +57,18 @@ public class HomeActivity extends BaseActivity implements BookListFragment.OnLis
         } else {
             InternetAccess.showNoInternetConnection(getApplicationContext());
         }
-
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerList = (ListView) findViewById(R.id.left_drawer);
-        title = drawerTitle = getTitle();
-
-        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout,
-                R.drawable.ic_drawer, R.string.drawer_opened, R.string.drawer_closed) {
-            public void onDrawerClosed(View view) {
-                super.onDrawerClosed(view);
-                getActionBar().setTitle(title);
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                getActionBar().setTitle(drawerTitle);
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-        };
-
         drawerList.setAdapter(new NavigationDrawerAdapter(this, getMenuItemsArray()));
         drawerList.setOnItemClickListener(new DrawerItemClickListener());
+        drawerToggle = new android.support.v7.app.ActionBarDrawerToggle(this, drawerLayout, R.string.drawer_opened, R.string.drawer_closed);
         drawerLayout.setDrawerListener(drawerToggle);
-
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeButtonEnabled(true);
+        }
+        drawerToggle.syncState();
     }
 
     private DrawerMenuItem[] getMenuItemsArray() {
@@ -112,10 +92,7 @@ public class HomeActivity extends BaseActivity implements BookListFragment.OnLis
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (drawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+        return drawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
@@ -127,9 +104,7 @@ public class HomeActivity extends BaseActivity implements BookListFragment.OnLis
 
     private void showMenuItemContent(int position) {
         drawerList.setItemChecked(position, true);
-        //setTitle(actionsArray[position]);
         drawerLayout.closeDrawer(drawerList);
-
         switch (position) {
             case EXPLORER:
                 showFragment(BookListFragment.newInstance());
@@ -152,12 +127,6 @@ public class HomeActivity extends BaseActivity implements BookListFragment.OnLis
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
     }
-
-//    @Override
-//    public void setTitle(CharSequence title) {
-//        this.title= title;
-//        getActionBar().setTitle(title);
-//    }
 
     private void showFragment(Fragment fragment) {
         FragmentManager fragmentManager = getFragmentManager();

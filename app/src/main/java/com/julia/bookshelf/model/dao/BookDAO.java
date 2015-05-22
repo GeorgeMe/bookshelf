@@ -2,7 +2,6 @@ package com.julia.bookshelf.model.dao;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.Nullable;
 
 import com.julia.bookshelf.model.data.Book;
@@ -41,7 +40,7 @@ public class BookDAO extends AbsDAO {
         execute(new Query() {
             @Override
             public void execute(Database database) {
-                ContentValues values = getValues(book);
+                ContentValues values = createValues(book);
                 database.insert(Table.NAME, null, values);
             }
         });
@@ -52,7 +51,7 @@ public class BookDAO extends AbsDAO {
         database.beginTransaction();
         try {
             for (int i = 0; i < bookList.size(); i++) {
-                ContentValues values = getValues(bookList.get(i));
+                ContentValues values = createValues(bookList.get(i));
                 database.insert(Table.NAME, null, values);
             }
             database.setTransactionSuccessful();
@@ -63,7 +62,7 @@ public class BookDAO extends AbsDAO {
     }
 
 
-    private ContentValues getValues(Book book) {
+    private ContentValues createValues(Book book) {
         ContentValues values = new ContentValues();
         values.put(Table.ID, book.getId());
         values.put(Table.TITLE, book.getTitle());
@@ -92,7 +91,7 @@ public class BookDAO extends AbsDAO {
     }
 
 
-    private Book getBook(Cursor cursor) {//todo: create and return book object
+    private Book getBook(Cursor cursor) {
         Book book = new Book();
         int idIndex = cursor.getColumnIndex(Table.ID);
         int titleIndex = cursor.getColumnIndex(Table.TITLE);
@@ -116,7 +115,7 @@ public class BookDAO extends AbsDAO {
         Database database = openDatabase();
         Cursor cursor = database.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
-            bookList = new ArrayList<Book>();
+            bookList = new ArrayList<>();
             do {
                 Book book = getBook(cursor);
                 bookList.add(book);
@@ -139,7 +138,7 @@ public class BookDAO extends AbsDAO {
 
     public int updateBook(Book book) {
         Database database = openDatabase();
-        ContentValues values = getValues(book);
+        ContentValues values = createValues(book);
         int res = database.update(Table.NAME, values, Table.ID + " = ?",
                 new String[]{String.valueOf(book.getId())});
         closeDatabase();
@@ -152,5 +151,14 @@ public class BookDAO extends AbsDAO {
         database.delete(Table.NAME, Table.ID + " = ?",
                 new String[]{String.valueOf(book.getId())});
         closeDatabase();
+    }
+
+    public void deleteAllBooks() {
+        execute(new Query() {
+            @Override
+            public void execute(Database database) {
+                database.delete(Table.NAME, null, null);
+            }
+        });
     }
 }

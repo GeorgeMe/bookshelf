@@ -1,13 +1,12 @@
 package com.julia.bookshelf.ui.adapters;
 
 import android.content.Context;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.julia.bookshelf.R;
 import com.julia.bookshelf.model.data.Book;
@@ -19,25 +18,18 @@ import java.util.List;
 /**
  * Created by Julia on 30.12.2014.
  */
-public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
+public class IconBookAdapter extends RecyclerView.Adapter<IconBookAdapter.ViewHolder> {
     private List<Book> books;
     private OnItemClickListener listener;
     private Context context;
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView cover;
-        TextView title;
-        TextView author;
-        ImageView isFavourite;
 
-
-        public ViewHolder(CardView cvBook) {
-            super(cvBook);
-            cover = (ImageView) cvBook.findViewById(R.id.img_cover);
-            title = (TextView) cvBook.findViewById(R.id.txt_title);
-            author = (TextView) cvBook.findViewById(R.id.txt_author);
-            isFavourite = (ImageView) cvBook.findViewById(R.id.img_favourite);
-            cvBook.setOnClickListener(this);
+        public ViewHolder(FrameLayout ltBook) {
+            super(ltBook);
+            cover = (ImageView) ltBook.findViewById(R.id.img_cover);
+            ltBook.setOnClickListener(this);
         }
 
         @Override
@@ -52,11 +44,11 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
         public void onItemClick(View v, int position);
     }
 
-    public void setOnItemCleckListener(final OnItemClickListener listener) {
+    public void setOnItemClickListener(final OnItemClickListener listener) {
         this.listener = listener;
     }
 
-    public BookAdapter(Context context) {
+    public IconBookAdapter(Context context) {
         books = new ArrayList<>();
         this.context = context;
     }
@@ -64,20 +56,13 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.book_list_item, viewGroup, false);
-        return new ViewHolder((CardView) v);
+                .inflate(R.layout.icons_booklist_item, viewGroup, false);
+        return new ViewHolder((FrameLayout) v);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         Book book = books.get(i);
-        viewHolder.title.setText(book.getTitle());
-        viewHolder.author.setText(book.getAuthor());
-//        if (book.isFavourite()) {
-//            viewHolder.isFavourite.setImageResource(R.drawable.ic_action_favourite);
-//        } else {
-//            viewHolder.isFavourite.setImageResource(R.drawable.ic_action_not_favourite);
-//        }
         Picasso.with(context).load(book.getCover()).into(viewHolder.cover);
     }
 

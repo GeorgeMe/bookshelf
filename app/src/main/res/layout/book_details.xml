@@ -35,7 +35,8 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/txt_size_headline"
                 android:maxLines="2"
-                tools:text="@string/test_text_short" />
+                tools:text="@string/test_text_short"
+                android:textColor="#000"/>
 
             <TextView
                 android:id="@+id/txt_author"
@@ -43,7 +44,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/txt_size_subhead"
-                tools:text="@string/test_text_short" />
+                tools:text="@string/test_text_short"
+                android:textColor="#000"/>
 
             <TextView
                 android:id="@+id/txt_general_rating"
@@ -51,7 +53,8 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/txt_size_body"
                 tools:text="Rating 7,4 by 109 people"
-                android:layout_marginTop="16dp" />
+                android:layout_marginTop="16dp"
+                android:textColor="#000"/>
 
             <RatingBar
                 android:id="@+id/rb_rating"
@@ -69,19 +72,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="@string/test_text_long"
-        android:layout_marginTop="4dp" />
+        android:layout_marginTop="4dp"
+        android:textColor="#000"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/Annotation"
         android:textStyle="bold"
-        android:layout_marginTop="4dp" />
+        android:layout_marginTop="4dp"
+        android:textColor="#000"/>
 
     <TextView
         android:id="@+id/txt_annotation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="@string/test_text_huge" />
+        tools:text="@string/test_text_huge"
+        android:textColor="#000"/>
 </LinearLayout>
 

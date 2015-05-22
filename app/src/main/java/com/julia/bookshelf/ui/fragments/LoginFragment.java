@@ -1,7 +1,6 @@
 package com.julia.bookshelf.ui.fragments;
 
 import android.app.Fragment;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -19,9 +18,6 @@ import com.julia.bookshelf.model.http.InternetAccess;
 import com.julia.bookshelf.model.tasks.LoginUserTask;
 import com.julia.bookshelf.ui.activity.HomeActivity;
 
-/**
- * Created by Julia on 21.01.2015.
- */
 public class LoginFragment extends BaseFragment {
 
     public interface OnRegisterClickedListener {
@@ -55,7 +51,7 @@ public class LoginFragment extends BaseFragment {
         txtUsername = (EditText) view.findViewById(R.id.txt_username);
         txtPassword = (EditText) view.findViewById(R.id.txt_password);
 
-        Button btnLogin = (Button) view.findViewById(R.id.btn_log_in);
+        Button btnLogin = (Button) view.findViewById(R.id.txt_log_in);
         TextView txtRegister = (TextView) view.findViewById(R.id.txt_sign_up);
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override

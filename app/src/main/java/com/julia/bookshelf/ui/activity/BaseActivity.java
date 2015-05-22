@@ -1,15 +1,13 @@
 package com.julia.bookshelf.ui.activity;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
+
 
 import com.julia.bookshelf.model.pref.PreferencesManager;
 
-/**
- * Created by Julia on 01.02.2015.
- */
-public class BaseActivity extends Activity {
+public class BaseActivity extends AppCompatActivity {
 
     private PreferencesManager preferencesManager;
 

@@ -10,10 +10,7 @@ import com.julia.bookshelf.model.data.User;
 import com.julia.bookshelf.ui.fragments.LoginFragment;
 import com.julia.bookshelf.ui.fragments.RegisterFragment;
 
-/**
- * Created by Julia on 21.01.2015.
- */
-public class LoginActivity extends BaseActivity implements LoginFragment.OnRegisterClickedListener {
+public class LoginActivity extends BaseActivity implements LoginFragment.OnRegisterClickedListener, RegisterFragment.OnLoginClickedListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,5 +41,19 @@ public class LoginActivity extends BaseActivity implements LoginFragment.OnRegis
             fragmentTransaction.addToBackStack(null);
         }
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onLoginClicked() {
+        onBackPressed();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (getFragmentManager().getBackStackEntryCount() > 0 ){
+            getFragmentManager().popBackStack();
+        } else {
+            super.onBackPressed();
+        }
     }
 }

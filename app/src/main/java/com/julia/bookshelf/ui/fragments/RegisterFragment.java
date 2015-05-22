@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.julia.bookshelf.R;
@@ -17,14 +18,19 @@ import com.julia.bookshelf.model.http.InternetAccess;
 import com.julia.bookshelf.model.tasks.RegisterUserTask;
 import com.julia.bookshelf.ui.activity.HomeActivity;
 
-/**
- * Created by Julia on 21.01.2015.
- */
 public class RegisterFragment extends BaseFragment {
     private EditText txtUsername;
     private EditText txtPassword;
     private EditText txtConfirmPassword;
     private EditText txtEmail;
+
+    public interface OnLoginClickedListener {
+        public void onLoginClicked();
+    }
+
+    private OnLoginClickedListener getListener() {
+        return (OnLoginClickedListener) getActivity();
+    }
 
     @Nullable
     @Override
@@ -39,11 +45,18 @@ public class RegisterFragment extends BaseFragment {
         txtConfirmPassword = (EditText) view.findViewById(R.id.txt_confirm_password);
         txtEmail = (EditText) view.findViewById(R.id.txt_email);
 
-        Button btnRegister = (Button) view.findViewById(R.id.btn_register);
+        TextView txtLogin = (TextView) view.findViewById(R.id.txt_sign_in);
+        Button btnRegister = (Button) view.findViewById(R.id.txt_register);
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onRegisterClicked();
+            }
+        });
+        txtLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getListener().onLoginClicked();
             }
         });
     }
@@ -51,8 +64,8 @@ public class RegisterFragment extends BaseFragment {
     private void onRegisterClicked() {
         if (InternetAccess.isInternetConnection(getActivity().getApplicationContext())) {
             if (isDataValid()) {
+                registerUser(getUsername(), getPassword(), getEmail());
             }
-            registerUser(getUsername(), getPassword(), getEmail());
         } else {
             InternetAccess.showNoInternetConnection(getActivity().getApplicationContext());
         }

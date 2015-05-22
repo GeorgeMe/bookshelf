@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,13 +16,10 @@ import com.julia.bookshelf.model.data.Book;
 import com.julia.bookshelf.model.http.InternetAccess;
 import com.julia.bookshelf.model.http.URLCreator;
 import com.julia.bookshelf.model.tasks.LoadBooksTask;
-import com.julia.bookshelf.ui.adapters.BookAdapter;
+import com.julia.bookshelf.ui.adapters.IconBookAdapter;
 
 import java.util.List;
 
-/**
- * Created by Julia on 30.01.2015.
- */
 public class FavouriteBooksFragment extends BaseFragment {
     public static Fragment newInstance() {
         return new FavouriteBooksFragment();
@@ -33,7 +29,7 @@ public class FavouriteBooksFragment extends BaseFragment {
         public void onListItemClicked(Book book);
     }
 
-    private BookAdapter rvAdapter;
+    private IconBookAdapter rvAdapter;
 
     @Nullable
     @Override
@@ -76,10 +72,10 @@ public class FavouriteBooksFragment extends BaseFragment {
         RecyclerView rvBookList = (RecyclerView) view.findViewById(R.id.rv_book_list);
         rvBookList.setHasFixedSize(true);
         Context context = getActivity().getApplicationContext();
-        RecyclerView.LayoutManager rvManager = new GridLayoutManager(context, 2);
+        RecyclerView.LayoutManager rvManager = new GridLayoutManager(context, 3);
         rvBookList.setLayoutManager(rvManager);
-        rvAdapter = new BookAdapter(context);
-        rvAdapter.setOnItemCleckListener(new BookAdapter.OnItemClickListener() {
+        rvAdapter = new IconBookAdapter(context);
+        rvAdapter.setOnItemClickListener(new IconBookAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
                 getListener().onListItemClicked(rvAdapter.getBook(position));

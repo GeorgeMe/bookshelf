@@ -19,19 +19,16 @@ import com.julia.bookshelf.model.database.tasks.LoadBooksFromDatabaseTask;
 import com.julia.bookshelf.model.http.InternetAccess;
 import com.julia.bookshelf.model.http.URLCreator;
 import com.julia.bookshelf.model.tasks.LoadBooksTask;
-import com.julia.bookshelf.ui.adapters.BookAdapter;
+import com.julia.bookshelf.ui.adapters.IconBookAdapter;
 
 import java.util.List;
 
-/**
- * Created by Julia on 26.01.2015.
- */
 public class BookListFragment extends BaseFragment {
     public interface OnListItemClickedListener {
         public void onListItemClicked(Book book);
     }
 
-    private BookAdapter rvAdapter;
+    private IconBookAdapter rvAdapter;
 
     public static Fragment newInstance() {
         return new BookListFragment();
@@ -51,30 +48,41 @@ public class BookListFragment extends BaseFragment {
         loadBooksFromDatabase();
 
         if (InternetAccess.isInternetConnection(getActivity().getApplicationContext())) {
-            LoadBooksTask loadBooksTask = new LoadBooksTask(URLCreator.loadBook()) {
-                @Override
-                protected void onPostExecute(final List<Book> books) {
-                    updateView(books);
-                    //todo: save bookList in database
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            new BookDAO().addBookList(books);
-                        }
-                    }).start();
-                }
-            };
-            loadBooksTask.execute();
+            loadBooksFromServer();
         } else {
             InternetAccess.showNoInternetConnection(getActivity().getApplicationContext());
         }
+    }
+
+    private void loadBooksFromServer() {
+        LoadBooksTask loadBooksTask = new LoadBooksTask(URLCreator.loadBook()) {
+            @Override
+            protected void onPostExecute(final List<Book> books) {
+                updateView(books);
+                saveBookListInDatabase(books);
+            }
+        };
+        loadBooksTask.execute();
+    }
+
+    private void saveBookListInDatabase(final List<Book> books) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                BookDAO bookDAO = new BookDAO();
+                bookDAO.deleteAllBooks();
+                bookDAO.addBookList(books);
+            }
+        }).start();
     }
 
     private void loadBooksFromDatabase() {
         LoadBooksFromDatabaseTask loadBooksFromDatabaseTask = new LoadBooksFromDatabaseTask() {
             @Override
             protected void onPostExecute(List<Book> books) {
-                updateView(books);
+                if (books != null) {
+                    updateView(books);
+                }
             }
         };
         loadBooksFromDatabaseTask.execute();
@@ -89,10 +97,10 @@ public class BookListFragment extends BaseFragment {
         RecyclerView rvBookList = (RecyclerView) view.findViewById(R.id.rv_book_list);
         rvBookList.setHasFixedSize(true);
         Context context = getActivity().getApplicationContext();
-        RecyclerView.LayoutManager rvManager = new GridLayoutManager(context, 2);
+        RecyclerView.LayoutManager rvManager = new GridLayoutManager(context, 3);
         rvBookList.setLayoutManager(rvManager);
-        rvAdapter = new BookAdapter(context);
-        rvAdapter.setOnItemCleckListener(new BookAdapter.OnItemClickListener() {
+        rvAdapter = new IconBookAdapter(context);
+        rvAdapter.setOnItemClickListener(new IconBookAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
                 getListener().onListItemClicked(rvAdapter.getBook(position));

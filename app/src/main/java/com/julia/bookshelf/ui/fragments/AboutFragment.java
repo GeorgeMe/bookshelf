@@ -9,9 +9,6 @@ import android.view.ViewGroup;
 
 import com.julia.bookshelf.R;
 
-/**
- * Created by Julia on 30.01.2015.
- */
 public class AboutFragment extends Fragment {
     @Nullable
     @Override

@@ -1,6 +1,6 @@
 package com.julia.bookshelf.ui.activity;
 
-import android.app.ActionBar;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,10 +22,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-
-/**
- * Created by Julia on 10.11.2014.
- */
 public class BookDetailsActivity extends BaseActivity {
     private static final String EXTRAS_BOOK = "EXTRAS_BOOK";
     private boolean isFavorite;
@@ -35,7 +31,7 @@ public class BookDetailsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.book_details);
 
-        final ActionBar actionBar = getActionBar();
+        final android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle("Book details");
         initView();
@@ -67,14 +63,12 @@ public class BookDetailsActivity extends BaseActivity {
                 getPreferences().addFavouriteBook(book);
                 sendFavouriteBook();
             } else {
-                //todo: deleting favourite book
+                //deleting favourite book
                 // from server
                 DeleteFavouriteBookTask deleteFavouriteBookTask = new DeleteFavouriteBookTask(getPreferences().getFavouriteBook(book));
                 deleteFavouriteBookTask.execute();
                 // from prefs
                 getPreferences().deleteFavouriteBook(book);
-
-
             }
         }
         super.onDestroy();
@@ -97,10 +91,13 @@ public class BookDetailsActivity extends BaseActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem item = menu.findItem(R.id.action_favorite);
         if (isFavorite) {
-            menu.findItem(R.id.action_favorite).setIcon(R.drawable.ic_action_favourite);
+            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+            item.setIcon(R.drawable.ic_action_favourite);
         } else {
-            menu.findItem(R.id.action_favorite).setIcon(R.drawable.ic_action_not_favourite);
+            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+            item.setIcon(R.drawable.ic_action_not_favourite);
         }
         return super.onPrepareOptionsMenu(menu);
     }
