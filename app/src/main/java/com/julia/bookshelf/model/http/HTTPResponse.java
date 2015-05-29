@@ -2,9 +2,6 @@ package com.julia.bookshelf.model.http;
 
 import org.apache.http.HttpStatus;
 
-/**
- * Created by Julia on 19.01.2015.
- */
 public class HTTPResponse {
     private int httpStatus;
     private String json;

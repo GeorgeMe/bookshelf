@@ -7,9 +7,6 @@ import com.julia.bookshelf.model.data.Book;
 
 import java.util.List;
 
-/**
- * Created by Julia on 28.02.2015.
- */
 public class LoadBooksFromDatabaseTask extends AsyncTask<Void, Void, List<Book>> {
 
     @Override

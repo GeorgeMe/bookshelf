@@ -10,9 +10,6 @@ import com.julia.bookshelf.model.database.Database;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Julia on 23.02.2015.
- */
 public class BookDAO extends AbsDAO {
 
     private interface Table {

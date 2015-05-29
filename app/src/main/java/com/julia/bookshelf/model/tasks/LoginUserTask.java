@@ -8,9 +8,6 @@ import com.julia.bookshelf.model.http.HTTPResponse;
 import com.julia.bookshelf.model.http.URLCreator;
 import com.julia.bookshelf.model.parsers.JSONParser;
 
-/**
- * Created by Julia on 17.01.2015.
- */
 public class LoginUserTask extends AsyncTask<Void, Void, User> {
 
     private final String username;

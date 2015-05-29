@@ -4,9 +4,6 @@ import android.util.Log;
 
 import java.util.List;
 
-/**
- * Created by Julia on 19.01.2015.
- */
 public class URLCreator {
     public static String loadBook() {
         return "https://api.parse.com/1/classes/Book";

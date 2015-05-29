@@ -13,9 +13,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-/**
- * Created by Julia on 02.01.2015.
- */
 public class JSONParser {
     public static ArrayList<Book> parseBooks(String json) {
         ArrayList<Book> bookList = new ArrayList<>();

@@ -3,9 +3,6 @@ package com.julia.bookshelf.model.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-/**
- * Created by Julia on 18.11.2014.
- */
 public class Book implements Parcelable {
     private String id;
     private String cover;
@@ -13,8 +10,8 @@ public class Book implements Parcelable {
     private String author;
     private String genre;
     private String annotation;
-    private int userRating;
-    private int generalRating;
+    private float userRating;
+    private float generalRating;
     private int people;
 
     public Book(Parcel parcel) {
@@ -24,8 +21,8 @@ public class Book implements Parcelable {
         this.author = parcel.readString();
         this.genre = parcel.readString();
         this.annotation = parcel.readString();
-        this.userRating = parcel.readInt();
-        this.generalRating = parcel.readInt();
+        this.userRating = parcel.readFloat();
+        this.generalRating = parcel.readFloat();
         this.people = parcel.readInt();
     }
 
@@ -60,11 +57,11 @@ public class Book implements Parcelable {
         return annotation;
     }
 
-    public int getUserRating() {
+    public float getUserRating() {
         return userRating;
     }
 
-    public int getGeneralRating() {
+    public float getGeneralRating() {
         return generalRating;
     }
 
@@ -92,11 +89,11 @@ public class Book implements Parcelable {
         this.annotation = annotation;
     }
 
-    public void setUserRating(int userRating) {
+    public void setUserRating(float userRating) {
         this.userRating = userRating;
     }
 
-    public void setGeneralRating(int generalRating) {
+    public void setGeneralRating(float generalRating) {
         this.generalRating = generalRating;
     }
 
@@ -118,8 +115,8 @@ public class Book implements Parcelable {
         dest.writeString(author);
         dest.writeString(genre);
         dest.writeString(annotation);
-        dest.writeInt(userRating);
-        dest.writeInt(generalRating);
+        dest.writeFloat(userRating);
+        dest.writeFloat(generalRating);
         dest.writeInt(people);
     }
 

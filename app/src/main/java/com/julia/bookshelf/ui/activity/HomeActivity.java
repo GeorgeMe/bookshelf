@@ -72,9 +72,9 @@ public class HomeActivity extends BaseActivity implements BookListFragment.OnLis
     }
 
     private DrawerMenuItem[] getMenuItemsArray() {
-        return new DrawerMenuItem[]{new DrawerMenuItem("Explorer", R.drawable.ic_action_explorer),
-                new DrawerMenuItem("Favourite", R.drawable.ic_action_favourite),
-                new DrawerMenuItem("About", R.drawable.ic_action_about),
+        return new DrawerMenuItem[]{new DrawerMenuItem("Explorer", R.drawable.ic_drawer_books),
+                new DrawerMenuItem("Favourite", R.drawable.ic_drawer_star),
+                new DrawerMenuItem("About", R.drawable.ic_drawer_about),
                 new DrawerMenuItem("Log out", R.drawable.ic_action_logout)};
     }
 

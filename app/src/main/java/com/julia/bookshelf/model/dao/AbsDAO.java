@@ -5,9 +5,6 @@ import android.database.Cursor;
 import com.julia.bookshelf.model.database.Database;
 import com.julia.bookshelf.model.database.DatabaseManager;
 
-/**
- * Created by Julia on 24.02.2015.
- */
 public abstract class AbsDAO {
     protected Database openDatabase() {
         return DatabaseManager.getInstance().openDatabase();

@@ -10,9 +10,6 @@ import android.widget.TextView;
 
 import com.julia.bookshelf.R;
 
-/**
- * Created by Julia on 04.02.2015.
- */
 public class NavigationDrawerAdapter extends ArrayAdapter<DrawerMenuItem> {
     private final Context context;
     private final DrawerMenuItem[] menuItemsArray;

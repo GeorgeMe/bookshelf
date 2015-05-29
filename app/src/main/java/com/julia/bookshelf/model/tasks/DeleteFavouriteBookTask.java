@@ -6,9 +6,6 @@ import com.julia.bookshelf.model.data.FavouriteBook;
 import com.julia.bookshelf.model.http.HTTPClient;
 import com.julia.bookshelf.model.http.URLCreator;
 
-/**
- * Created by Julia on 06.02.2015.
- */
 public class DeleteFavouriteBookTask extends AsyncTask<Void, Void, Void> {
     private FavouriteBook favouriteBook;
 

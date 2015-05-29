@@ -14,9 +14,6 @@ import com.julia.bookshelf.model.parsers.JSONParser;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-/**
- * Created by Julia on 28.01.2015.
- */
 public class AddFavouriteBookTask extends AsyncTask<Void, Void, FavouriteBook> {
     private User user;
     private Book book;

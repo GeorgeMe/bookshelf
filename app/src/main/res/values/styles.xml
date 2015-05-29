@@ -21,7 +21,7 @@
     </style>
     <style name="EditTextStyle">
         <item name="android:textSize">@dimen/txt_size_body</item>
-        <item name="android:textColor">#000</item>
+        <item name="android:textColor">@color/primary_text</item>
     </style>
 
     <style name="AppCompat.Button.Flat" parent="Base.TextAppearance.AppCompat">
@@ -34,6 +34,12 @@
         <item name="android:paddingRight">@dimen/btn_flat_padding</item>
         <item name="android:layout_marginLeft">@dimen/btn_flat_margin</item>
         <item name="android:layout_marginRight">@dimen/btn_flat_margin</item>
+    </style>
+
+    <style name="bookRatingBar" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/book_rating_bar_full</item>
+        <item name="android:minHeight">14dp</item>
+        <item name="android:maxHeight">14dp</item>
     </style>
 
 </resources>

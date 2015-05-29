@@ -17,9 +17,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Julia on 20.01.2015.
- */
 public class PreferencesManager {
     private static final String PREFS_NAME = "book-shelf-pref";
     private static final String KEY_USER = "user";

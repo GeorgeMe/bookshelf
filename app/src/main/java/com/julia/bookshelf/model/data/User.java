@@ -1,8 +1,5 @@
 package com.julia.bookshelf.model.data;
 
-/**
- * Created by Julia on 16.01.2015.
- */
 public class User {
     private String id;
     private String username;

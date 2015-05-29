@@ -13,9 +13,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 
-/**
- * Created by Julia on 09.01.2015.
- */
 public class HTTPClient {
 
     public static HTTPResponse get(String path) {

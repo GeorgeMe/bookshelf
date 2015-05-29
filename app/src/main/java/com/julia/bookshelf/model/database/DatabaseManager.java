@@ -5,9 +5,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-/**
- * Created by Julia on 24.02.2015.
- */
 public class DatabaseManager {
     private AtomicInteger openCounter = new AtomicInteger();
 

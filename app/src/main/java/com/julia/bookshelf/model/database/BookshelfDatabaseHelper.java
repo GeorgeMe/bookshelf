@@ -6,9 +6,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.julia.bookshelf.model.dao.BookDAO;
 
-/**
- * Created by Julia on 23.02.2015.
- */
 public class BookshelfDatabaseHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "books.db";

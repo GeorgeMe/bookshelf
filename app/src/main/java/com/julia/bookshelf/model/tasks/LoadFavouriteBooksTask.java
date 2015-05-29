@@ -11,9 +11,6 @@ import com.julia.bookshelf.model.parsers.JSONParser;
 
 import java.util.List;
 
-/**
- * Created by Julia on 04.02.2015.
- */
 public class LoadFavouriteBooksTask extends AsyncTask<Void, Void, List<FavouriteBook>> {
     private User user;
 

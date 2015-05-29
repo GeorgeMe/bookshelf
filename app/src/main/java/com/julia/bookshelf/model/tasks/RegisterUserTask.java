@@ -12,9 +12,6 @@ import com.julia.bookshelf.model.parsers.JSONParser;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-/**
- * Created by Julia on 16.01.2015.
- */
 public class RegisterUserTask extends AsyncTask<String, Void, User> {
     @Override
     protected User doInBackground(String... params) {

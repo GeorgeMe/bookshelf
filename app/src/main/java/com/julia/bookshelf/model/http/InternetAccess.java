@@ -7,9 +7,6 @@ import android.widget.Toast;
 
 import com.julia.bookshelf.R;
 
-/**
- * Created by Julia on 16.01.2015.
- */
 public class InternetAccess {
     public static boolean isInternetConnection(Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);

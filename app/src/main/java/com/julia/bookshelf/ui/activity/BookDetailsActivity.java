@@ -1,10 +1,8 @@
 package com.julia.bookshelf.ui.activity;
 
-import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Html;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -26,6 +24,7 @@ public class BookDetailsActivity extends BaseActivity {
     private static final String EXTRAS_BOOK = "EXTRAS_BOOK";
     private boolean isFavorite;
     private boolean hasChange;
+    private Book book;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +32,8 @@ public class BookDetailsActivity extends BaseActivity {
 
         final android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle("Book details");
+        book = getIntent().getParcelableExtra(EXTRAS_BOOK);
+        actionBar.setTitle(book.getGenre());
         initView();
         initFavouriteIcon();
     }
@@ -94,10 +94,10 @@ public class BookDetailsActivity extends BaseActivity {
         MenuItem item = menu.findItem(R.id.action_favorite);
         if (isFavorite) {
             item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-            item.setIcon(R.drawable.ic_action_favourite);
+            item.setIcon(R.drawable.ic_toolbar_star_pink);
         } else {
             item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-            item.setIcon(R.drawable.ic_action_not_favourite);
+            item.setIcon(R.drawable.ic_toolbar_star_white);
         }
         return super.onPrepareOptionsMenu(menu);
     }
@@ -126,23 +126,24 @@ public class BookDetailsActivity extends BaseActivity {
     }
 
     private void initView() {
-        Book book = getIntent().getParcelableExtra(EXTRAS_BOOK);
-
         ImageView imgCover = (ImageView) findViewById(R.id.img_cover);
         TextView txtTitle = (TextView) findViewById(R.id.txt_title);
         TextView txtAuthor = (TextView) findViewById(R.id.txt_author);
         TextView txtGeneralRating = (TextView) findViewById(R.id.txt_general_rating);
         RatingBar rbRating = (RatingBar) findViewById(R.id.rb_rating);
-        TextView txtGenre = (TextView) findViewById(R.id.txt_genre);
         TextView txtAnnotation = (TextView) findViewById(R.id.txt_annotation);
 
         Picasso.with(this).load(book.getCover()).into(imgCover);
         txtTitle.setText(book.getTitle());
         txtAuthor.setText(book.getAuthor());
-        txtGeneralRating.setText(String.format(getString(R.string.Rating_by), book.getGeneralRating(), book.getPeople()));
+
+        //test data
+        book.setGeneralRating((float) 4.73);
+        book.setPeople(51);
+        book.setUserRating((float)3.5);
+
+        txtGeneralRating.setText(String.format(getString(R.string.Rating_by), round(book.getGeneralRating(), 1), book.getPeople()));
         rbRating.setRating(book.getUserRating());
-        String htmlText = String.format(getString(R.string.Genre), book.getGenre());
-        txtGenre.setText(Html.fromHtml(htmlText));
         txtAnnotation.setText(book.getAnnotation());
 
     }
@@ -151,6 +152,12 @@ public class BookDetailsActivity extends BaseActivity {
         Intent intent = new Intent(context, BookDetailsActivity.class);
         intent.putExtra(EXTRAS_BOOK, book);
         context.startActivity(intent);
+    }
+    public static double round(float value, int places) {
+        long factor = (long) Math.pow(10, places);
+        value = value * factor;
+        long tmp = Math.round(value);
+        return (float) tmp / factor;
     }
 
 }

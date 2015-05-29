@@ -4,9 +4,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-/**
- * Created by Julia on 25.02.2015.
- */
 public class Database {
     private SQLiteDatabase database;
 

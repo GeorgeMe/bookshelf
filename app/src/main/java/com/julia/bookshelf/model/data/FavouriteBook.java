@@ -2,9 +2,6 @@ package com.julia.bookshelf.model.data;
 
 import android.support.annotation.Nullable;
 
-/**
- * Created by Julia on 04.02.2015.
- */
 public class FavouriteBook {
     private String objectId;
     private String bookId;

@@ -15,9 +15,6 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Julia on 30.12.2014.
- */
 public class IconBookAdapter extends RecyclerView.Adapter<IconBookAdapter.ViewHolder> {
     private List<Book> books;
     private OnItemClickListener listener;
