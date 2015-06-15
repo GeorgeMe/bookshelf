@@ -60,7 +60,8 @@
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     style="@style/bookRatingBar"
-                    android:layout_gravity="center_vertical"/>
+                    android:layout_gravity="center_vertical"
+                    android:isIndicator="true"/>
 
                 <TextView
                     android:id="@+id/txt_general_rating"

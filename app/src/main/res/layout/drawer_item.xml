@@ -15,9 +15,9 @@
         android:id="@+id/txt_action"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#fff"
+        android:textColor="@color/secondary_text"
         android:textSize="@dimen/txt_size_subhead"
-     android:layout_gravity="center_vertical"
+        android:layout_gravity="center_vertical"
         android:paddingLeft="12dp"
         />
 </LinearLayout>

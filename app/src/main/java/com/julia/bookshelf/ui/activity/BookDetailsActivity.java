@@ -14,6 +14,7 @@ import com.julia.bookshelf.R;
 import com.julia.bookshelf.model.data.Book;
 import com.julia.bookshelf.model.data.FavouriteBook;
 import com.julia.bookshelf.model.data.User;
+import com.julia.bookshelf.model.http.InternetAccess;
 import com.julia.bookshelf.model.tasks.AddFavouriteBookTask;
 import com.julia.bookshelf.model.tasks.DeleteFavouriteBookTask;
 import com.squareup.picasso.Picasso;
@@ -59,16 +60,20 @@ public class BookDetailsActivity extends BaseActivity {
     protected void onDestroy() {
         if (hasChange) {
             Book book = getIntent().getParcelableExtra(EXTRAS_BOOK);
-            if (isFavorite) {
-                getPreferences().addFavouriteBook(book);
-                sendFavouriteBook();
+            if (InternetAccess.isInternetConnection(getApplicationContext())) {
+                if (isFavorite) {
+                    getPreferences().addFavouriteBook(book);
+                    sendFavouriteBook();
+                } else {
+                    //deleting favourite book
+                    // from server
+                    DeleteFavouriteBookTask deleteFavouriteBookTask = new DeleteFavouriteBookTask(getPreferences().getFavouriteBook(book));
+                    deleteFavouriteBookTask.execute();
+                    // from prefs
+                    getPreferences().deleteFavouriteBook(book);
+                }
             } else {
-                //deleting favourite book
-                // from server
-                DeleteFavouriteBookTask deleteFavouriteBookTask = new DeleteFavouriteBookTask(getPreferences().getFavouriteBook(book));
-                deleteFavouriteBookTask.execute();
-                // from prefs
-                getPreferences().deleteFavouriteBook(book);
+                InternetAccess.showNoInternetConnection(getApplicationContext());
             }
         }
         super.onDestroy();
@@ -140,7 +145,7 @@ public class BookDetailsActivity extends BaseActivity {
         //test data
         book.setGeneralRating((float) 4.73);
         book.setPeople(51);
-        book.setUserRating((float)3.5);
+        book.setUserRating((float) 3.5);
 
         txtGeneralRating.setText(String.format(getString(R.string.Rating_by), round(book.getGeneralRating(), 1), book.getPeople()));
         rbRating.setRating(book.getUserRating());
@@ -153,6 +158,7 @@ public class BookDetailsActivity extends BaseActivity {
         intent.putExtra(EXTRAS_BOOK, book);
         context.startActivity(intent);
     }
+
     public static double round(float value, int places) {
         long factor = (long) Math.pow(10, places);
         value = value * factor;
