@@ -2,14 +2,12 @@ package com.julia.bookshelf.model.pref;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
-
 import com.julia.bookshelf.model.data.Book;
 import com.julia.bookshelf.model.data.FavouriteBook;
 import com.julia.bookshelf.model.data.User;
 import com.julia.bookshelf.model.parsers.JSONParser;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -99,6 +97,7 @@ public class PreferencesManager {
         }
     }
 
+    @NonNull
     public ArrayList<String> getFavouriteBooksId() {
         ArrayList<FavouriteBook> favouriteBookArrayList = loadFavouriteBooks();
         ArrayList<String> idArrayList = new ArrayList<>();

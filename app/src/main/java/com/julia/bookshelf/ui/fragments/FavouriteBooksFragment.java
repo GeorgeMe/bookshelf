@@ -3,6 +3,7 @@ package com.julia.bookshelf.ui.fragments;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,20 +14,24 @@ import android.widget.Toast;
 
 import com.julia.bookshelf.R;
 import com.julia.bookshelf.model.data.Book;
+import com.julia.bookshelf.model.database.tasks.LoadBooksFromDatabaseTask;
 import com.julia.bookshelf.model.http.InternetAccess;
 import com.julia.bookshelf.model.http.URLCreator;
 import com.julia.bookshelf.model.tasks.LoadBooksTask;
 import com.julia.bookshelf.ui.adapters.BookAdapter;
 
-import java.util.List;
+import java.util.*;
 
 public class FavouriteBooksFragment extends BaseFragment {
+
+    private List<String> mFavouriteBookId;
+
     public static Fragment newInstance() {
         return new FavouriteBooksFragment();
     }
 
     public interface OnListItemClickedListener {
-        public void onListItemClicked(Book book);
+        void onListItemClicked(Book book);
     }
 
     private BookAdapter rvAdapter;
@@ -39,17 +44,42 @@ public class FavouriteBooksFragment extends BaseFragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        mFavouriteBookId = getPreferences().getFavouriteBooksId();
         initView(view);
+        loadDataFromDatabase();
         if (InternetAccess.isInternetConnection(getActivity().getApplicationContext())) {
-            loadFavouriteBooks();
+            loadFavouriteBooks(mFavouriteBookId);
         } else {
             InternetAccess.showNoInternetConnection(getActivity().getApplicationContext());
         }
     }
 
+    private void loadDataFromDatabase() {
+        LoadBooksFromDatabaseTask task = new LoadBooksFromDatabaseTask() {
+            @Override
+            protected void onPostExecute(List<Book> books) {
+                List<Book> favoriteBooks = new ArrayList<>();
+                for (Book book : books) {
+                    if(isFavorite(book.getId())) {
+                        favoriteBooks.add(book);
+                    }
+                }
+                updateView(favoriteBooks);
+            }
+        };
+        task.execute();
+    }
 
-    private void loadFavouriteBooks() {
-        List<String> favouriteBookId = getPreferences().getFavouriteBooksId();
+    private boolean isFavorite(@NonNull String id) {
+        for (String favId : mFavouriteBookId) {
+            if (favId.equals(id)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void loadFavouriteBooks(@NonNull List<String> favouriteBookId) {
         if (!favouriteBookId.isEmpty()) {
             LoadBooksTask loadBooksTask = new LoadBooksTask(URLCreator.getFavouriteBooks(favouriteBookId)) {
                 @Override
@@ -63,7 +93,13 @@ public class FavouriteBooksFragment extends BaseFragment {
         }
     }
 
-    private void updateView(List<Book> bookList) {
+    private void updateView(@NonNull List<Book> bookList) {
+        Collections.sort(bookList, new Comparator<Book>() {
+            @Override
+            public int compare(Book book1, Book book2) {
+                return book1.getTitle().compareTo(book2.getTitle());
+            }
+        });
         rvAdapter.updateData(bookList);
         rvAdapter.notifyDataSetChanged();
     }
