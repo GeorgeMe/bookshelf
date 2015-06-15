@@ -15,7 +15,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-public class IconBookAdapter extends RecyclerView.Adapter<IconBookAdapter.ViewHolder> {
+public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
     private List<Book> books;
     private OnItemClickListener listener;
     private Context context;
@@ -38,29 +38,31 @@ public class IconBookAdapter extends RecyclerView.Adapter<IconBookAdapter.ViewHo
     }
 
     public interface OnItemClickListener {
-        public void onItemClick(View v, int position);
+        void onItemClick(View v, int position);
     }
 
     public void setOnItemClickListener(final OnItemClickListener listener) {
         this.listener = listener;
     }
 
-    public IconBookAdapter(Context context) {
+    public BookAdapter(Context context) {
         books = new ArrayList<>();
         this.context = context;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.icons_booklist_item, viewGroup, false);
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_book, viewGroup, false);
         return new ViewHolder((FrameLayout) v);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         Book book = books.get(i);
-        Picasso.with(context).load(book.getCover()).into(viewHolder.cover);
+        String imageUrl = book.getCover();
+        if(imageUrl != null) {
+            Picasso.with(context).load(imageUrl).fit().centerCrop().into(viewHolder.cover);
+        }
     }
 
     @Override

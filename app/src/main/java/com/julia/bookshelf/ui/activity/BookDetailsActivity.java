@@ -138,7 +138,10 @@ public class BookDetailsActivity extends BaseActivity {
         RatingBar rbRating = (RatingBar) findViewById(R.id.rb_rating);
         TextView txtAnnotation = (TextView) findViewById(R.id.txt_annotation);
 
-        Picasso.with(this).load(book.getCover()).into(imgCover);
+        String imageUrl = book.getCover();
+        if(imageUrl != null) {
+            Picasso.with(this).load(imageUrl).fit().centerCrop().into(imgCover);
+        }
         txtTitle.setText(book.getTitle());
         txtAuthor.setText(book.getAuthor());
 

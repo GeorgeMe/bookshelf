@@ -19,7 +19,7 @@ import com.julia.bookshelf.model.database.tasks.LoadBooksFromDatabaseTask;
 import com.julia.bookshelf.model.http.InternetAccess;
 import com.julia.bookshelf.model.http.URLCreator;
 import com.julia.bookshelf.model.tasks.LoadBooksTask;
-import com.julia.bookshelf.ui.adapters.IconBookAdapter;
+import com.julia.bookshelf.ui.adapters.BookAdapter;
 
 import java.util.List;
 
@@ -28,7 +28,7 @@ public class BookListFragment extends BaseFragment {
         public void onListItemClicked(Book book);
     }
 
-    private IconBookAdapter rvAdapter;
+    private BookAdapter rvAdapter;
 
     public static Fragment newInstance() {
         return new BookListFragment();
@@ -99,8 +99,8 @@ public class BookListFragment extends BaseFragment {
         Context context = getActivity().getApplicationContext();
         RecyclerView.LayoutManager rvManager = new GridLayoutManager(context, 3);
         rvBookList.setLayoutManager(rvManager);
-        rvAdapter = new IconBookAdapter(context);
-        rvAdapter.setOnItemClickListener(new IconBookAdapter.OnItemClickListener() {
+        rvAdapter = new BookAdapter(context);
+        rvAdapter.setOnItemClickListener(new BookAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
                 getListener().onListItemClicked(rvAdapter.getBook(position));
