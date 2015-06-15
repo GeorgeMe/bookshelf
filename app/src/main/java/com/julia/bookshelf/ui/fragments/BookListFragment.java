@@ -3,6 +3,7 @@ package com.julia.bookshelf.ui.fragments;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,6 +22,8 @@ import com.julia.bookshelf.model.http.URLCreator;
 import com.julia.bookshelf.model.tasks.LoadBooksTask;
 import com.julia.bookshelf.ui.adapters.BookAdapter;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class BookListFragment extends BaseFragment {
@@ -88,7 +91,13 @@ public class BookListFragment extends BaseFragment {
         loadBooksFromDatabaseTask.execute();
     }
 
-    private void updateView(List<Book> bookList) {
+    private void updateView(@NonNull List<Book> bookList) {
+        Collections.sort(bookList, new Comparator<Book>() {
+            @Override
+            public int compare(Book book1, Book book2) {
+                return book1.getTitle().compareTo(book2.getTitle());
+            }
+        });
         rvAdapter.updateData(bookList);
         rvAdapter.notifyDataSetChanged();
     }
